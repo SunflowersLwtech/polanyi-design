@@ -14,98 +14,136 @@ senior designers *know* but rarely articulate.
 Not a role-play. Not a template generator.<br>
 An operational thinking system grounded in tacit knowledge theory.
 
-[Install](#install) · [See the Difference](#-see-the-difference) · [How It Works](#-how-it-works) · [Measured Impact](#-measured-impact) · [Credits](#credits)
+[Install](#-install) · [See the Difference](#-see-the-difference) · [How It Works](#-how-it-works) · [Measured Impact](#-measured-impact) · [Credits](#credits)
 
 </div>
 
 ---
 
-## Install
+## 📦 Install
+
+### Method 1: Global (works across all projects)
 
 ```bash
-npx skills add SunflowersLwtech/polanyi-design
+mkdir -p ~/.claude/skills/polanyi-design
+
+curl -o ~/.claude/skills/polanyi-design/SKILL.md \
+  https://raw.githubusercontent.com/SunflowersLwtech/polanyi-design/main/SKILL.md
+```
+
+### Method 2: Project-local (this repo only)
+
+```bash
+mkdir -p .claude/skills/polanyi-design
+
+curl -o .claude/skills/polanyi-design/SKILL.md \
+  https://raw.githubusercontent.com/SunflowersLwtech/polanyi-design/main/SKILL.md
+```
+
+### Method 3: Manual
+
+1. Download [SKILL.md](SKILL.md)
+2. Place it at `~/.claude/skills/polanyi-design/SKILL.md` (global) or `.claude/skills/polanyi-design/SKILL.md` (project)
+
+### Usage
+
+Once installed, invoke directly:
+
+```
+/polanyi-design 设计一个登录页面
+```
+
+Or let it auto-activate when you ask design-related questions — the skill triggers on keywords like "design", "layout", "UI", "looks like a template", "feels off", etc.
+
+### Verify Installation
+
+```bash
+cat ~/.claude/skills/polanyi-design/SKILL.md | head -5
+# Should show: ---
+#              name: polanyi-design
 ```
 
 ---
 
 ## 👁 See the Difference
 
-> **Same prompt, same model, different depth.**
+> **Same prompt, same model. One with the skill loaded, one without.**
 
-Open both demo pages side-by-side to see the actual rendered output:
+### Prompt: *"设计一个软件服务公司的 landing page"*
 
-| Without Skill | With Skill |
-|:---:|:---:|
-| [demo-baseline.html](showcase/demo-baseline.html) | [demo-enhanced.html](showcase/demo-enhanced.html) |
-| Correct layout, standard patterns | Every choice has a *reason* |
+Both pages were generated in fresh Claude Code sessions with **identical prompts**.
+The only difference: one session had `polanyi-design` loaded.
 
-### Prompt: *"Design a SaaS pricing page — 3 tiers, make Pro the obvious choice, premium not template-y."*
+**[View Baseline (no skill)](showcase/landing-baseline.html)** · **[View Enhanced (with skill)](showcase/landing-enhanced.html)**
 
 <table>
 <tr>
-<th width="50%">❌ Without Skill (Baseline)</th>
-<th width="50%">✅ With polanyi-design</th>
+<th width="50%">❌ Without Skill — 648 lines</th>
+<th width="50%">✅ With polanyi-design — 1058 lines</th>
 </tr>
 <tr>
 <td>
 
-**Visual Strategy**<br>
-"Asymmetric emphasis — Pro card physically dominates."
+**No design thesis.** Jumps straight to code.
 
-**Layout**<br>
-Pro 380px wide vs 340px. Cards 32px padding, 16px radius.
+**Generic palette**: Blue gradients, standard SaaS look
 
-**Toggle**<br>
-Segmented control, slide-fade animation.
+**Font**: System defaults
 
-**Anti-Template**<br>
-• Pro wider not taller<br>
-• Gradient on 1px border only<br>
-• CTA above features<br>
-• Dark mode by default
+**Hero**: 居中标题 + 双按钮 CTA + 渐变背景
 
-</td>
-<td>
+**Services**: 6 等宽卡片网格
 
-**Design Thesis**<br>
-*"Pro is the protagonist. Hobby and Enterprise exist to make Pro's value obvious through contrast."*
+**Testimonials**: 3 条并排五星评价
 
-**Layout + Reasoning**<br>
-Pro at `scale-[1.02]`. Price block has **fixed `h-[72px]`** to prevent layout shift on toggle.
+**Layout**: 居中对齐一切，均匀间距
 
-**Toggle + Semantic Color**<br>
-Savings badge uses `emerald` not indigo — *"emerald encodes 'money saved', a different semantic than brand identity"*
-
-**Boundary-Breaking Badge**<br>
-*"`absolute -top-3.5` — breaks the card boundary intentionally. A badge inside padding is subsidiary; a badge that breaches is focal."*
-
-**Accessibility**<br>
-`focus-visible:outline-2`, `aria-hidden` on icons, `role="list"` on features.
-
-**What NOT to Do**<br>
-• *"Don't hover-lift pricing cards — they imply the whole card is clickable"*<br>
-• *"Don't list 15+ features — group into categories"*
-
-**Escape Hatch**<br>
-*"If your product has equal tier adoption, flatten the hierarchy. This assumes Pro is the business model."*
-
-</td>
-</tr>
-<tr>
-<td>
-
-🔍 Correct and implementable.<br>
-Never explains *why*.
+**Accessibility**: 未提及
 
 </td>
 <td>
 
-🎯 Same specs + tacit reasoning<br>
-that prevents wrong implementation.
+**Declares design thesis first:**<br>
+*"Editorial Technical — 杂志般的排版节奏 + 工程师的精确感"*
+
+**Anti-template decisions:**<br>
+*"不用蓝色。选了深植物绿 #2d5a27 — 传递'有机生长'而非'又一个SaaS'"*
+
+**Font**: Playfair Display (衬线) + Inter (无衬线) — 编辑杂志感
+
+**Hero**: 60/40 分割，斜体衬线 + 无衬线混排制造视觉张力
+
+**Services**: 大号编号 01/02/03 低透明度 — 给节奏不抢内容
+
+**Testimonials**: *"只放一条 — 一个好引言比三个平庸的更有力"*
+
+**Layout**: 每处都有一个主次关系，非对称
+
+**Accessibility**: `prefers-reduced-motion`, `:focus-visible`, 语义化 HTML
 
 </td>
 </tr>
 </table>
+
+### Key Design Decisions Only the Skill Produces
+
+| Decision | Why It Matters |
+|----------|---------------|
+| **不用蓝色，用深植物绿** | 蓝色是 SaaS 模板的统计众数。偏离默认 = 有观点 |
+| **衬线 + 无衬线混排** | 单一字体 = 模板。有对比的字体搭配 = 设计系统 |
+| **Hero 60/40 分割** | 50/50 读起来像犹豫不决，60/40 读起来像有意为之 |
+| **Testimonial 只放一条** | Skill 的默会判断：一条有力的 > 三条平庸的 |
+| **声明设计论点再写代码** | 没有论点的设计 = 无意识的默认值堆积 |
+
+### Fashion Brand Demo
+
+Also included: a luxury fashion website (NOIR ATELIER) with the same A/B methodology:
+
+**[View Baseline](showcase/demo-baseline.html)** · **[View Enhanced](showcase/demo-enhanced.html)**
+
+| Without Skill | With Skill |
+|---|---|
+| 黑底白字，居中一切，Inter字体，均匀3列网格 | 暖白色调，Fibonacci间距，描边建筑字体，非对称分割，token层级 |
 
 ---
 
@@ -127,34 +165,36 @@ Three systems fire in sequence:
 └─────────────────────────────────┘
 ```
 
-### System 2: Five Design Lenses
+### System 2: Five Design Lenses + Cross-Cutting
 
-| Lens | What It Does | Example |
-|------|-------------|---------|
-| **Gestalt First** | Perceive the whole before parts | *"The gestalt voice test fails — no single adjective describes this page"* |
-| **Subsidiary-Focal** | Design system should be invisible | *"Users notice the interface → it has failed its subsidiary role"* |
-| **Token Hierarchy** | Raw → Semantic → Component | *"Good tokens ≠ good design. Tokens provide materials, not judgment."* |
-| **Tacit Translation** | Feeling → Cause → Fix → Why | *"Feels cramped" → content-to-whitespace ratio → increase padding 1.5x* |
-| **Convention Judgment** | Know when to break rules | *"8px grid exists for rhythm — break it for optical alignment (2-4px)"* |
+| Lens | What It Does |
+|------|-------------|
+| **Gestalt First** | Perceive the whole before parts. "Feels off" = gestalt failure. |
+| **Subsidiary-Focal** | Design system should be invisible. Content is what you look AT. |
+| **Token Hierarchy** | Raw → Semantic → Component. Good tokens ≠ good design. |
+| **Tacit Translation** | "Feels cramped" → content-to-whitespace ratio → increase padding 1.5x |
+| **Convention Judgment** | Know WHY rules exist. Break with rationale. |
 
-### Cross-Cutting Modules
+**Cross-Cutting**: Accessibility (focus-visible, contrast AA, reduced-motion) · Motion System (duration scale, easing, choreography) · Data Visualization Colors (categorical, sequential, divergent, colorblind-safe) · Quality Verification (axe-core, 200% zoom, VoiceOver)
 
-| Module | Coverage |
-|--------|---------|
-| **Accessibility** | Focus states (2px outline), contrast verification (AA 4.5:1), touch targets (44px), `prefers-reduced-motion`, screen reader guidance |
-| **Motion System** | Duration scale (100ms micro → 800ms data), easing vocabulary (ease-out entrances, spring feedback), choreography (stagger 30-50ms), reduced-motion fallback |
-| **Data Visualization** | Categorical (6 hues max), sequential (single-hue ramp), divergent (red ← gray → emerald), colorblind safety (blue/orange, redundant encoding) |
-| **Quality Verification** | axe-core, 200% zoom test, keyboard navigation, VoiceOver flow, visual regression at 375/768/1440px |
+### Aesthetic Judgment Encoding
+
+Six patterns from [frontend-design research](references/CREDITS.md):
+
+1. **Negation > Assertion** — Ban defaults (Inter, shadow-md, rounded-lg) rather than prescribing "good taste"
+2. **Polarization > Compromise** — Commit to "brutally minimal" or "maximalist editorial." The middle is where templates live.
+3. **Intentionality > Intensity** — "What makes this UNFORGETTABLE?" beats "What follows best practices?"
+4. **Anti-Convergence** — Prevent AI from reproducing the same safe choices every time
+5. **Taxonomy > Rules** — Aesthetic directions (editorial, brutalist, organic) instead of fixed rules
+6. **Multi-Layer Refinement** — Direction → Domain → Tactic → Negation, all coherent
 
 ### System 3: Output Protocol
 
-Every response follows: **Spec first, philosophy second.**
-
 ```
-[1-sentence gestalt diagnosis]
-[Concrete fixes with EXACT values — px, hex, font names]
-[Tacit rationale — why it matters experientially]
-[What NOT to do — prevents the most likely wrong fix]
+[1-sentence design thesis — declared before any code]
+[Concrete implementation — px, hex, font names]
+[Tacit rationale — why, not just what]
+[What NOT to do — prevents the most likely wrong choice]
 [Escape hatch — when this advice shouldn't apply]
 ```
 
@@ -162,50 +202,36 @@ Every response follows: **Spec first, philosophy second.**
 
 ## 📊 Measured Impact
 
-Evaluated via **blind A/B testing** — an independent evaluator agent scored baseline
-vs enhanced responses without knowing which was which.
+Evaluated via **blind A/B testing** across 5 design scenarios,
+3 rounds of iteration:
 
-### Per-Dimension Improvement
-
-| Dimension | Δ | What This Means |
-|-----------|:---:|----------------|
-| Technical Correctness | **+1.6** | Production-aware choices (CLS prevention, `focus-visible`, `asChild`) |
-| Design Quality | **+1.6** | Badge focal tension, semantic color differentiation, shadow conviction |
-| Depth of Reasoning | **+2.0** | Explains *why* — "protagonist/supporting cast" design thesis |
-| Actionability | **+1.6** | Same specs + rationale that prevents wrong implementation |
-| **Tacit Articulation** | **+2.8** | Surfaces judgment tutorials never teach |
-
-### Iteration Trajectory
+| Dimension | Avg Improvement |
+|-----------|:--------------:|
+| Technical Correctness | **+1.6** |
+| Design Quality | **+1.6** |
+| Depth of Reasoning | **+2.0** |
+| Actionability | **+1.6** |
+| **Tacit Articulation** | **+2.8** |
+| **Overall** | **+30%** |
 
 ```
-R1  ████████████████████████░░░░░░░░░░░░░░░░  +23.0%  AC regression found
-R2  ████████████████████████████████░░░░░░░░░  +31.0%  AC fixed (+3.0 swing)
-R3  ███████████████████████████████░░░░░░░░░░  +30.0%  Production ready
-    ─────────target: +20%──────────
+R1  ████████████████████████░░░░░░░░░░░░░░░░  +23%  (AC regression found)
+R2  ████████████████████████████████░░░░░░░░░  +31%  (AC fixed, +3.0 swing)
+R3  ███████████████████████████████░░░░░░░░░░  +30%  (production ready)
 ```
-
-> *"The skill has moved from 'gives better answers' to 'gives answers that think*
-> *the way a senior designer thinks.'"*
-> — Independent evaluator agent
 
 ---
 
 ## Theoretical Foundation
 
-Built on **Michael Polanyi's tacit knowledge framework** (1958-1966):
-
-- **Tacit Knowledge** — "We know more than we can tell." Expert judgment resists full codification.
-- **Subsidiary-Focal Awareness** — We attend *from* tools (subsidiary) *to* tasks (focal). Great design systems are subsidiary — you look *through* them.
-- **Gestalt Integration** — Polanyi drew from Gestalt psychology. UI design IS gestalt — figure/ground, proximity, continuity, closure.
-- **Indwelling** — Mastery = the tool becomes part of the mind. A well-designed API lets developers think *through* it, not *about* it.
-
-Operationalized through:
+Built on **Michael Polanyi's tacit knowledge framework** (1958-1966), operationalized through:
 
 | Researcher | Contribution | How We Use It |
 |-----------|-------------|--------------|
-| **Dreyfus Brothers** | 5-stage skill acquisition model | Calibrate advice depth to user expertise |
-| **Harry Collins** | Tacit knowledge taxonomy | Distinguish what AI can extract vs what requires practice |
-| **Nonaka (critique)** | SECI model's misreading of Polanyi | Acknowledge what *cannot* be fully codified |
+| **Michael Polanyi** | Subsidiary-focal awareness, indwelling, tacit knowing | Core lenses for design analysis |
+| **Dreyfus Brothers** | 5-stage skill acquisition | Calibrate advice depth to user level |
+| **Harry Collins** | Tacit knowledge taxonomy (relational/somatic/collective) | What AI can extract vs what needs practice |
+| **Gestalt Psychology** | Figure-ground, proximity, continuity, closure | Visual design diagnostics |
 
 ---
 
@@ -213,8 +239,8 @@ Operationalized through:
 
 This is an **original work**, not a fork. We gratefully acknowledge:
 
-- **[enzyme2013/polanyi-skill](https://github.com/enzyme2013/polanyi-skill)** — First public Polanyi skill. Built with [nuwa-skill](https://github.com/alchaincyf/nuwa-skill). Inspired our approach of encoding cognitive patterns as operational frameworks.
-- **[Google Design MD (Stitch)](https://stitch.withgoogle.com/docs/design-md/format)** — Structured design system specification format.
+- **[enzyme2013/polanyi-skill](https://github.com/enzyme2013/polanyi-skill)** — First public Polanyi skill, built with [nuwa-skill](https://github.com/alchaincyf/nuwa-skill)
+- **[Google Design MD (Stitch)](https://stitch.withgoogle.com/docs/design-md/format)** — Structured design system spec format
 - **Michael Polanyi** — *Personal Knowledge* (1958), *The Tacit Dimension* (1966)
 - **The Polanyi Society** — [polanyisociety.org](https://polanyisociety.org/)
 
@@ -224,29 +250,7 @@ See [references/CREDITS.md](references/CREDITS.md) for full attribution.
 
 ## License
 
-```
-MIT License
-
-Copyright (c) 2026 sunfl
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
+MIT License — See [LICENSE](LICENSE) for full text.
 
 ---
 
@@ -257,6 +261,6 @@ SOFTWARE.
 
 <br>
 
-**[View Live Demo](showcase/index.html)** · **[SKILL.md](SKILL.md)** · **[Full Credits](references/CREDITS.md)**
+**[View Demos](showcase/)** · **[SKILL.md](SKILL.md)** · **[Full Credits](references/CREDITS.md)**
 
 </div>
