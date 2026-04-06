@@ -3,278 +3,1897 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Enhanced: Pricing Page (With polanyi-design)</title>
+<title>NOIR ATELIER</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@200;300;400;500&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: 'Inter', system-ui, sans-serif;
-    background: #fafaf9;
-    color: #111827;
-    min-height: 100vh;
-  }
+/* ═══════════════════════════════════════════════
+   DESIGN TOKENS — RAW → SEMANTIC → COMPONENT
+   Fibonacci spacing: 8 13 21 34 55 89 144 233
+   ═══════════════════════════════════════════════ */
 
-  /* Label bar */
-  .label-bar {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    background: #6366f1; text-align: center;
-    padding: 8px; font-size: 12px; color: rgba(255,255,255,0.8); font-weight: 500;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-  }
-  .label-bar strong { color: white; }
+:root {
+  /* ── Raw Palette ── */
+  --raw-bone:       #E8E0D5;
+  --raw-ash:        #9C9488;
+  --raw-charcoal:   #2C2824;
+  --raw-ink:        #1A1714;
+  --raw-cream:      #F5F0EA;
+  --raw-stone:      #B8AFA4;
+  --raw-oxide:      #8B4513;
+  --raw-warm-white: #FAF7F2;
+  --raw-clay:       #6B5B4F;
 
-  .pricing { max-width: 1120px; margin: 0 auto; padding: 136px 24px 96px; text-align: center; }
-  .pricing h2 {
-    font-size: 40px; font-weight: 700; letter-spacing: -0.03em;
-    line-height: 1.1; margin-bottom: 12px; color: #111827;
-  }
-  .pricing > p { color: #6b7280; font-size: 17px; margin-bottom: 36px; }
+  /* ── Semantic ── */
+  --surface-primary:   var(--raw-warm-white);
+  --surface-deep:      var(--raw-ink);
+  --surface-mid:       var(--raw-bone);
+  --text-primary:      var(--raw-charcoal);
+  --text-secondary:    var(--raw-ash);
+  --text-inverse:      var(--raw-cream);
+  --accent:            var(--raw-oxide);
+  --border:            var(--raw-stone);
 
-  /* Toggle — pill with savings badge animation */
-  .toggle {
-    display: inline-flex; background: #f3f4f6; border-radius: 999px;
-    padding: 4px; margin-bottom: 56px; position: relative;
-  }
-  .toggle button {
-    position: relative; z-index: 1; padding: 10px 24px;
-    font-size: 14px; font-weight: 500; color: #6b7280; background: none; border: none;
-    border-radius: 999px; cursor: pointer; font-family: inherit;
-    transition: color 0.2s ease-out;
-    display: inline-flex; align-items: center; gap: 6px;
-  }
-  .toggle button.active { color: #111827; }
-  .toggle::before {
-    content: ''; position: absolute; top: 4px; left: 4px;
-    width: calc(50% - 4px); height: calc(100% - 8px);
-    background: white; border-radius: 999px;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.06);
-    transition: transform 0.3s cubic-bezier(0,0,0.2,1);
-  }
-  .toggle.annual::before { transform: translateX(100%); }
-  .savings-badge {
-    font-size: 11px; font-weight: 600; background: #d1fae5; color: #047857;
-    padding: 2px 8px; border-radius: 999px;
-    transition: opacity 0.3s, transform 0.3s;
-    opacity: 0; transform: translateY(2px);
-  }
-  .toggle.annual .savings-badge { opacity: 1; transform: translateY(0); }
+  /* ── Fibonacci Spacing ── */
+  --sp-1: 8px;
+  --sp-2: 13px;
+  --sp-3: 21px;
+  --sp-4: 34px;
+  --sp-5: 55px;
+  --sp-6: 89px;
+  --sp-7: 144px;
+  --sp-8: 233px;
 
-  /* Cards — Pro as protagonist */
-  .cards {
-    display: grid; grid-template-columns: 1fr 1.08fr 1fr;
-    gap: 20px; align-items: start; text-align: left;
-  }
-  .card {
-    background: white; border: 1px solid #e5e7eb;
-    border-radius: 16px; padding: 32px;
-    transition: box-shadow 0.3s ease-out;
-    display: flex; flex-direction: column;
-  }
-  .card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+  /* ── Type Scale (modular: 1.333 ratio) ── */
+  --fs-xs:   0.75rem;
+  --fs-sm:   0.875rem;
+  --fs-base: 1rem;
+  --fs-md:   1.333rem;
+  --fs-lg:   1.777rem;
+  --fs-xl:   2.369rem;
+  --fs-2xl:  3.157rem;
+  --fs-3xl:  4.209rem;
+  --fs-4xl:  5.61rem;
+  --fs-hero: clamp(5rem, 15vw, 18rem);
 
-  /* Pro card — dark, scaled, elevated */
-  .card.featured {
-    background: #111827; color: #fafafa; border: none;
-    box-shadow: 0 24px 48px -12px rgba(0,0,0,0.25);
-    padding: 40px 36px; position: relative;
-    transform: scale(1.02);
-  }
-  .card.featured:hover { box-shadow: 0 24px 48px -12px rgba(0,0,0,0.35); }
+  /* ── Motion ── */
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-micro:   120ms;
+  --dur-std:     280ms;
+  --dur-emphasis: 480ms;
+  --dur-slow:    800ms;
+  --dur-reveal:  1200ms;
+}
 
-  /* Badge breaks card boundary — intentional focal tension */
-  .pop-badge {
-    position: absolute; top: -14px; left: 32px;
-    background: #6366f1; color: white;
-    font-size: 12px; font-weight: 600; letter-spacing: 0.02em;
-    padding: 5px 14px; border-radius: 999px;
-  }
+/* ═══════════════════════════════════════
+   RESET & BASE
+   ═══════════════════════════════════════ */
 
-  .card-name { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
-  .card .card-name { color: #6b7280; }
-  .card.featured .card-name { color: #a5b4fc; }
-  .card-desc { font-size: 14px; color: #9ca3af; margin-bottom: 20px; line-height: 1.5; }
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-  /* Fixed height price block — prevents CLS on toggle */
-  .price-block { height: 72px; display: flex; align-items: baseline; gap: 4px; }
-  .price-block .dollar { font-size: 16px; font-weight: 500; color: #9ca3af; align-self: flex-start; margin-top: 8px; }
-  .price-block .amount {
-    font-size: 52px; font-weight: 700; letter-spacing: -0.03em;
-    transition: opacity 0.15s, transform 0.15s;
-  }
-  .price-block .period { font-size: 15px; color: #9ca3af; }
-  .card.featured .price-block .dollar { color: #6b7280; }
-  .card.featured .price-block .amount { color: #fafafa; }
-  .card.featured .price-block .period { color: #6b7280; }
-  .card-sub { font-size: 13px; color: #9ca3af; margin-bottom: 24px; }
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
 
-  /* CTAs — three distinct visual weights */
-  .card-cta {
-    display: block; width: 100%; padding: 12px 16px; text-align: center;
-    border-radius: 10px; font-size: 14px; font-weight: 600;
-    cursor: pointer; border: none; font-family: inherit;
-    transition: background 0.15s ease-out, box-shadow 0.15s ease-out, transform 0.1s ease-out;
-  }
-  .card-cta:focus-visible {
-    outline: 2px solid #6366f1; outline-offset: 2px;
-  }
-  .card-cta:active { transform: translateY(1px); }
+body {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 300;
+  color: var(--text-primary);
+  background: var(--surface-primary);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
 
-  .card-cta.primary { background: #6366f1; color: white; }
-  .card-cta.primary:hover { background: #818cf8; box-shadow: 0 4px 12px rgba(99,102,241,0.3); }
-  .card-cta.dark { background: #1f2937; color: white; }
-  .card-cta.dark:hover { background: #374151; }
-  .card-cta.ghost { background: none; border: 1px solid #d1d5db; color: #374151; }
-  .card-cta.ghost:hover { border-color: #9ca3af; background: #f9fafb; }
+a {
+  color: inherit;
+  text-decoration: none;
+}
 
-  /* Features with grouped structure */
-  .features { margin-top: 24px; list-style: none; flex: 1; }
-  .feature-group { font-size: 12px; font-weight: 600; color: #9ca3af; text-transform: uppercase;
-    letter-spacing: 0.05em; margin: 16px 0 8px; }
-  .feature-group:first-child { margin-top: 0; }
-  .features li {
-    display: flex; align-items: flex-start; gap: 10px;
-    font-size: 14px; padding: 5px 0; line-height: 1.4;
-  }
-  .card .features li { color: #374151; }
-  .card.featured .features li { color: #d1d5db; }
-  .card.featured .feature-group { color: #6b7280; }
-  .features .icon { flex-shrink: 0; width: 16px; height: 16px; margin-top: 2px; }
-  .features .icon.check { color: #10b981; }
-  .card.featured .features .icon.check { color: #a5b4fc; }
-  .features .icon.dash { color: #d1d5db; }
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
 
-  .footer-note { margin-top: 56px; font-size: 13px; color: #9ca3af; }
-  .footer-note a { color: #6366f1; text-decoration: none; }
-  .footer-note a:hover { text-decoration: underline; }
+img {
+  display: block;
+  max-width: 100%;
+}
 
-  /* Annotations — visible design reasoning */
-  .annotation {
-    position: absolute; font-size: 11px; font-weight: 500;
-    color: #6366f1; background: rgba(99,102,241,0.08);
-    padding: 3px 8px; border-radius: 4px; white-space: nowrap;
-    pointer-events: none;
-  }
+/* Focus accessibility */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
 
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      animation-duration: 0.01ms !important;
-      transition-duration: 0.01ms !important;
-    }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
   }
-  @media (max-width: 960px) {
-    .cards { grid-template-columns: 1fr 1fr; }
-    .card.featured { grid-column: 1 / -1; max-width: 480px; margin: 0 auto; transform: none; }
-    .pop-badge { left: 24px; }
+  html { scroll-behavior: auto; }
+}
+
+/* ═══════════════════════════════════════
+   TYPOGRAPHY SYSTEM
+   ═══════════════════════════════════════ */
+
+.t-display {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 0.9;
+}
+
+.t-editorial {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.3;
+}
+
+.t-mono {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 200;
+  font-size: var(--fs-xs);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.t-body {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 300;
+  font-size: var(--fs-base);
+  line-height: 1.7;
+}
+
+.t-label {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 400;
+  font-size: var(--fs-xs);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* ═══════════════════════════════════════
+   SCROLL REVEAL SYSTEM
+   ═══════════════════════════════════════ */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(34px);
+  transition: opacity var(--dur-reveal) var(--ease-out),
+              transform var(--dur-reveal) var(--ease-out);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-55px);
+  transition: opacity var(--dur-reveal) var(--ease-out),
+              transform var(--dur-reveal) var(--ease-out);
+}
+
+.reveal-left.is-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(55px);
+  transition: opacity var(--dur-reveal) var(--ease-out),
+              transform var(--dur-reveal) var(--ease-out);
+}
+
+.reveal-right.is-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.92);
+  transition: opacity var(--dur-reveal) var(--ease-out),
+              transform var(--dur-reveal) var(--ease-out);
+}
+
+.reveal-scale.is-visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Stagger siblings */
+.stagger > .reveal:nth-child(2),
+.stagger > .reveal-scale:nth-child(2) { transition-delay: 80ms; }
+.stagger > .reveal:nth-child(3),
+.stagger > .reveal-scale:nth-child(3) { transition-delay: 160ms; }
+.stagger > .reveal:nth-child(4),
+.stagger > .reveal-scale:nth-child(4) { transition-delay: 240ms; }
+.stagger > .reveal:nth-child(5),
+.stagger > .reveal-scale:nth-child(5) { transition-delay: 320ms; }
+.stagger > .reveal:nth-child(6),
+.stagger > .reveal-scale:nth-child(6) { transition-delay: 400ms; }
+
+/* ═══════════════════════════════════════
+   NAVIGATION
+   ═══════════════════════════════════════ */
+
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--sp-4) var(--sp-5);
+  mix-blend-mode: difference;
+  transition: padding var(--dur-std) var(--ease-out);
+}
+
+.nav.scrolled {
+  padding: var(--sp-2) var(--sp-5);
+}
+
+.nav__logo {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 200;
+  font-size: var(--fs-sm);
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--raw-cream);
+}
+
+.nav__links {
+  display: flex;
+  gap: var(--sp-4);
+  list-style: none;
+}
+
+.nav__link {
+  font-size: var(--fs-xs);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 300;
+  color: var(--raw-cream);
+  position: relative;
+  padding-bottom: 2px;
+}
+
+.nav__link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--raw-cream);
+  transition: width var(--dur-std) var(--ease-out);
+}
+
+.nav__link:hover::after {
+  width: 100%;
+}
+
+.nav__menu-btn {
+  display: none;
+  color: var(--raw-cream);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 300;
+}
+
+@media (max-width: 768px) {
+  .nav__links { display: none; }
+  .nav__menu-btn { display: block; }
+  .nav { padding: var(--sp-3) var(--sp-3); }
+}
+
+/* ═══════════════════════════════════════
+   HERO — THE SIGNATURE MOVE
+   Type as architecture. "NOIR" as landscape.
+   ═══════════════════════════════════════ */
+
+.hero {
+  position: relative;
+  height: 100vh;
+  min-height: 700px;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  background: var(--raw-ink);
+}
+
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.hero__bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.4;
+  filter: contrast(1.1) saturate(0.7);
+  transform: scale(1.05);
+  transition: transform 8s linear;
+}
+
+.hero:hover .hero__bg img {
+  transform: scale(1);
+}
+
+/* The massive type that bleeds off-screen */
+.hero__title-wrap {
+  position: absolute;
+  top: 50%;
+  left: -3vw;
+  transform: translateY(-50%);
+  z-index: 2;
+  pointer-events: none;
+  width: 110vw;
+}
+
+.hero__title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-size: clamp(8rem, 22vw, 28rem);
+  line-height: 0.78;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(245, 240, 234, 0.25);
+  letter-spacing: -0.05em;
+  user-select: none;
+  opacity: 0;
+  animation: heroTitleIn 1.8s var(--ease-out) 0.3s forwards;
+}
+
+@keyframes heroTitleIn {
+  from {
+    opacity: 0;
+    transform: translateY(60px);
+    letter-spacing: 0.1em;
   }
-  @media (max-width: 640px) {
-    .cards { grid-template-columns: 1fr; gap: 16px; }
-    .card.featured { max-width: none; order: -1; }
-    .pricing h2 { font-size: 28px; }
-    .price-block .amount { font-size: 40px; }
-    .price-block { height: 60px; }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    letter-spacing: -0.05em;
   }
+}
+
+/* Bottom content bar */
+.hero__content {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: var(--sp-5);
+  padding-bottom: var(--sp-6);
+}
+
+.hero__tagline {
+  max-width: 340px;
+  opacity: 0;
+  animation: fadeSlideUp 1s var(--ease-out) 1s forwards;
+}
+
+.hero__tagline p {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: var(--fs-lg);
+  color: var(--raw-cream);
+  line-height: 1.35;
+}
+
+.hero__meta {
+  text-align: right;
+  opacity: 0;
+  animation: fadeSlideUp 1s var(--ease-out) 1.3s forwards;
+}
+
+.hero__season {
+  color: var(--raw-stone);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  font-weight: 200;
+  margin-bottom: var(--sp-2);
+}
+
+.hero__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  color: var(--raw-cream);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 300;
+  padding: var(--sp-2) 0;
+  border-bottom: 1px solid rgba(245, 240, 234, 0.3);
+  transition: border-color var(--dur-std) var(--ease-out),
+              gap var(--dur-std) var(--ease-out);
+}
+
+.hero__cta:hover {
+  border-color: var(--raw-cream);
+  gap: var(--sp-3);
+}
+
+.hero__cta svg {
+  width: 21px;
+  height: 21px;
+  transition: transform var(--dur-std) var(--ease-out);
+}
+
+.hero__cta:hover svg {
+  transform: translateX(5px);
+}
+
+/* Scroll indicator */
+.hero__scroll {
+  position: absolute;
+  bottom: var(--sp-4);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-1);
+  opacity: 0;
+  animation: fadeIn 1s var(--ease-out) 2s forwards;
+}
+
+.hero__scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, rgba(245,240,234,0.5), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+  0%, 100% { transform: scaleY(1); opacity: 0.5; }
+  50% { transform: scaleY(0.5); opacity: 1; }
+}
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@media (max-width: 768px) {
+  .hero__content {
+    flex-direction: column;
+    gap: var(--sp-4);
+    padding: var(--sp-3);
+    padding-bottom: var(--sp-6);
+  }
+  .hero__meta { text-align: left; }
+  .hero__title { font-size: clamp(5rem, 22vw, 12rem); }
+}
+
+/* ═══════════════════════════════════════
+   SECTION: COLLECTION GRID
+   Intentional asymmetry. Not a boring 3x2.
+   ═══════════════════════════════════════ */
+
+.collection {
+  padding: var(--sp-8) var(--sp-5);
+  background: var(--surface-primary);
+}
+
+.collection__header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-5);
+  margin-bottom: var(--sp-7);
+  align-items: end;
+}
+
+.collection__label {
+  color: var(--text-secondary);
+  margin-bottom: var(--sp-2);
+}
+
+.collection__title {
+  font-size: clamp(var(--fs-3xl), 6vw, var(--fs-4xl));
+}
+
+.collection__intro {
+  max-width: 400px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  justify-self: end;
+  align-self: end;
+}
+
+/* Asymmetric grid: 2 columns, staggered heights */
+.collection__grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: var(--sp-3);
+}
+
+.collection__item {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+/* Stagger: odd items pushed down */
+.collection__item:nth-child(even) {
+  margin-top: var(--sp-6);
+}
+
+.collection__item:nth-child(odd) {
+  margin-bottom: var(--sp-6);
+}
+
+.collection__img-wrap {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 3/4;
+  background: var(--raw-bone);
+}
+
+/* Third item spans wider, shorter */
+.collection__item:nth-child(3) .collection__img-wrap {
+  aspect-ratio: 4/5;
+}
+
+.collection__item:nth-child(4) .collection__img-wrap {
+  aspect-ratio: 2/3;
+}
+
+.collection__img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--dur-slow) var(--ease-out),
+              filter var(--dur-slow) var(--ease-out);
+  filter: saturate(0.85) contrast(1.05);
+}
+
+.collection__item:hover .collection__img-wrap img {
+  transform: scale(1.06);
+  filter: saturate(1) contrast(1);
+}
+
+/* Overlay on hover */
+.collection__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(26, 23, 20, 0.7) 0%,
+    rgba(26, 23, 20, 0) 50%
+  );
+  opacity: 0;
+  transition: opacity var(--dur-std) var(--ease-out);
+  display: flex;
+  align-items: flex-end;
+  padding: var(--sp-4);
+}
+
+.collection__item:hover .collection__overlay {
+  opacity: 1;
+}
+
+.collection__item-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: var(--fs-lg);
+  color: var(--raw-cream);
+  font-weight: 300;
+  transform: translateY(13px);
+  transition: transform var(--dur-std) var(--ease-out);
+}
+
+.collection__item:hover .collection__item-name {
+  transform: translateY(0);
+}
+
+.collection__item-price {
+  color: var(--raw-stone);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.15em;
+  margin-top: var(--sp-1);
+  transform: translateY(13px);
+  opacity: 0;
+  transition: transform var(--dur-std) var(--ease-out) 60ms,
+              opacity var(--dur-std) var(--ease-out) 60ms;
+}
+
+.collection__item:hover .collection__item-price {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Quick-view circle button */
+.collection__quick {
+  position: absolute;
+  top: var(--sp-3);
+  right: var(--sp-3);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(245,240,234,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--raw-cream);
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity var(--dur-std) var(--ease-out),
+              transform var(--dur-std) var(--ease-spring),
+              background var(--dur-micro);
+}
+
+.collection__item:hover .collection__quick {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.collection__quick:hover {
+  background: rgba(245,240,234,0.15);
+}
+
+@media (max-width: 768px) {
+  .collection { padding: var(--sp-7) var(--sp-3); }
+  .collection__header {
+    grid-template-columns: 1fr;
+    gap: var(--sp-3);
+    margin-bottom: var(--sp-5);
+  }
+  .collection__intro { justify-self: start; }
+  .collection__grid {
+    grid-template-columns: 1fr;
+    gap: var(--sp-4);
+  }
+  .collection__item:nth-child(even) { margin-top: 0; }
+  .collection__item:nth-child(odd) { margin-bottom: 0; }
+  .collection__overlay { opacity: 1; }
+  .collection__item-name { transform: translateY(0); }
+  .collection__item-price { transform: translateY(0); opacity: 1; }
+}
+
+/* ═══════════════════════════════════════
+   SECTION: BRAND STORY
+   Split layout, editorial feel
+   ═══════════════════════════════════════ */
+
+.brand-story {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+}
+
+.brand-story__image {
+  position: relative;
+  overflow: hidden;
+}
+
+.brand-story__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.7) contrast(1.1);
+}
+
+.brand-story__image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(26, 23, 20, 0.15) 0%,
+    transparent 60%
+  );
+}
+
+.brand-story__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--sp-7) var(--sp-6);
+  background: var(--raw-ink);
+  color: var(--text-inverse);
+  position: relative;
+}
+
+.brand-story__eyebrow {
+  color: var(--raw-ash);
+  margin-bottom: var(--sp-4);
+}
+
+.brand-story__title {
+  font-size: clamp(var(--fs-2xl), 4vw, var(--fs-3xl));
+  margin-bottom: var(--sp-5);
+  color: var(--raw-cream);
+}
+
+.brand-story__text {
+  max-width: 480px;
+  color: var(--raw-stone);
+  line-height: 1.9;
+  margin-bottom: var(--sp-4);
+  font-size: var(--fs-sm);
+}
+
+.brand-story__text:last-of-type {
+  margin-bottom: var(--sp-5);
+}
+
+.brand-story__quote {
+  font-size: clamp(var(--fs-md), 2vw, var(--fs-lg));
+  color: var(--raw-bone);
+  max-width: 420px;
+  margin-top: var(--sp-4);
+  padding-left: var(--sp-4);
+  border-left: 1px solid var(--raw-clay);
+}
+
+/* Decorative year */
+.brand-story__year {
+  position: absolute;
+  bottom: var(--sp-5);
+  right: var(--sp-5);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(6rem, 10vw, 12rem);
+  font-weight: 300;
+  color: rgba(245, 240, 234, 0.04);
+  line-height: 1;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .brand-story {
+    grid-template-columns: 1fr;
+  }
+  .brand-story__image {
+    height: 50vh;
+  }
+  .brand-story__content {
+    padding: var(--sp-5) var(--sp-3);
+  }
+}
+
+/* ═══════════════════════════════════════
+   SECTION: LOOKBOOK
+   Asymmetric masonry — editorial spread
+   ═══════════════════════════════════════ */
+
+.lookbook {
+  padding: var(--sp-8) var(--sp-5);
+  background: var(--surface-mid);
+}
+
+.lookbook__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: var(--sp-7);
+}
+
+.lookbook__title {
+  font-size: clamp(var(--fs-3xl), 6vw, var(--fs-4xl));
+}
+
+.lookbook__season-tag {
+  color: var(--text-secondary);
+  padding-bottom: var(--sp-1);
+  border-bottom: 1px solid var(--border);
+}
+
+/* Asymmetric layout: 3 columns, varied spans */
+.lookbook__grid {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr 0.8fr;
+  grid-template-rows: auto auto auto;
+  gap: var(--sp-2);
+}
+
+.lookbook__item {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.lookbook__item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--dur-slow) var(--ease-out);
+  filter: saturate(0.8);
+}
+
+.lookbook__item:hover img {
+  transform: scale(1.04);
+  filter: saturate(1);
+}
+
+/* Individual positioning for editorial feel */
+.lookbook__item:nth-child(1) {
+  grid-row: 1 / 3;
+  aspect-ratio: auto;
+  min-height: 600px;
+}
+
+.lookbook__item:nth-child(2) {
+  aspect-ratio: 4/3;
+}
+
+.lookbook__item:nth-child(3) {
+  grid-row: 1 / 3;
+  aspect-ratio: auto;
+  min-height: 500px;
+}
+
+.lookbook__item:nth-child(4) {
+  aspect-ratio: 16/10;
+}
+
+.lookbook__item:nth-child(5) {
+  grid-column: 1 / 3;
+  aspect-ratio: 21/9;
+}
+
+.lookbook__item:nth-child(6) {
+  aspect-ratio: 3/4;
+}
+
+/* Number indicator */
+.lookbook__num {
+  position: absolute;
+  bottom: var(--sp-3);
+  left: var(--sp-3);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: var(--fs-2xl);
+  font-weight: 300;
+  color: rgba(245,240,234,0.6);
+  line-height: 1;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity var(--dur-std) var(--ease-out),
+              transform var(--dur-std) var(--ease-out);
+}
+
+.lookbook__item:hover .lookbook__num {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 1024px) {
+  .lookbook__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .lookbook__item:nth-child(1) {
+    grid-row: auto;
+    min-height: 400px;
+  }
+  .lookbook__item:nth-child(3) {
+    grid-row: auto;
+    min-height: 400px;
+  }
+  .lookbook__item:nth-child(5) {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 768px) {
+  .lookbook { padding: var(--sp-7) var(--sp-3); }
+  .lookbook__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--sp-2);
+    margin-bottom: var(--sp-5);
+  }
+  .lookbook__grid {
+    grid-template-columns: 1fr;
+    gap: var(--sp-2);
+  }
+  .lookbook__item:nth-child(5) { grid-column: auto; }
+  .lookbook__item { min-height: auto !important; aspect-ratio: 3/4 !important; }
+  .lookbook__num { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════════════════════
+   HORIZONTAL MARQUEE / DIVIDER
+   ═══════════════════════════════════════ */
+
+.marquee {
+  overflow: hidden;
+  padding: var(--sp-5) 0;
+  background: var(--surface-deep);
+  white-space: nowrap;
+}
+
+.marquee__inner {
+  display: inline-flex;
+  animation: marqueeScroll 30s linear infinite;
+}
+
+.marquee__text {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-size: clamp(3rem, 6vw, 5rem);
+  color: rgba(245, 240, 234, 0.12);
+  letter-spacing: -0.02em;
+  padding: 0 var(--sp-5);
+  flex-shrink: 0;
+}
+
+.marquee__dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--raw-oxide);
+  opacity: 0.4;
+  align-self: center;
+  flex-shrink: 0;
+}
+
+@keyframes marqueeScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee__inner { animation: none; }
+}
+
+/* ═══════════════════════════════════════
+   SECTION: NEWSLETTER
+   ═══════════════════════════════════════ */
+
+.newsletter {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 80vh;
+}
+
+.newsletter__visual {
+  position: relative;
+  overflow: hidden;
+  background: var(--raw-charcoal);
+}
+
+.newsletter__visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.6;
+  filter: saturate(0.5);
+}
+
+.newsletter__visual-text {
+  position: absolute;
+  bottom: var(--sp-5);
+  left: var(--sp-5);
+  right: var(--sp-5);
+}
+
+.newsletter__visual-text p {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(var(--fs-xl), 3vw, var(--fs-3xl));
+  font-weight: 300;
+  color: var(--raw-cream);
+  line-height: 1.15;
+}
+
+.newsletter__form-wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--sp-7) var(--sp-6);
+  background: var(--surface-primary);
+}
+
+.newsletter__eyebrow {
+  color: var(--text-secondary);
+  margin-bottom: var(--sp-3);
+}
+
+.newsletter__title {
+  font-size: clamp(var(--fs-2xl), 4vw, var(--fs-3xl));
+  margin-bottom: var(--sp-3);
+}
+
+.newsletter__desc {
+  color: var(--text-secondary);
+  max-width: 380px;
+  margin-bottom: var(--sp-5);
+  line-height: 1.8;
+}
+
+.newsletter__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  max-width: 420px;
+}
+
+.newsletter__input-group {
+  position: relative;
+}
+
+.newsletter__input {
+  width: 100%;
+  padding: var(--sp-2) 0;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 300;
+  font-size: var(--fs-sm);
+  color: var(--text-primary);
+  transition: border-color var(--dur-std) var(--ease-out);
+  outline: none;
+}
+
+.newsletter__input::placeholder {
+  color: var(--raw-stone);
+  font-weight: 200;
+}
+
+.newsletter__input:focus {
+  border-color: var(--text-primary);
+}
+
+/* Animated underline on focus */
+.newsletter__input-group::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--accent);
+  transition: width var(--dur-std) var(--ease-out);
+}
+
+.newsletter__input-group:focus-within::after {
+  width: 100%;
+}
+
+.newsletter__submit {
+  align-self: flex-start;
+  margin-top: var(--sp-2);
+  padding: var(--sp-2) var(--sp-5);
+  border: 1px solid var(--text-primary);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 400;
+  color: var(--text-primary);
+  transition: background var(--dur-std) var(--ease-out),
+              color var(--dur-std) var(--ease-out),
+              transform var(--dur-micro) var(--ease-spring);
+}
+
+.newsletter__submit:hover {
+  background: var(--text-primary);
+  color: var(--surface-primary);
+}
+
+.newsletter__submit:active {
+  transform: scale(0.97);
+}
+
+.newsletter__privacy {
+  font-size: 0.7rem;
+  color: var(--raw-stone);
+  line-height: 1.6;
+  margin-top: var(--sp-1);
+}
+
+.newsletter__privacy a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+@media (max-width: 768px) {
+  .newsletter {
+    grid-template-columns: 1fr;
+  }
+  .newsletter__visual {
+    height: 45vh;
+  }
+  .newsletter__form-wrap {
+    padding: var(--sp-5) var(--sp-3);
+  }
+}
+
+/* ═══════════════════════════════════════
+   FOOTER
+   ═══════════════════════════════════════ */
+
+.footer {
+  background: var(--surface-deep);
+  color: var(--text-inverse);
+  padding: var(--sp-7) var(--sp-5) var(--sp-4);
+}
+
+.footer__top {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: var(--sp-5);
+  margin-bottom: var(--sp-7);
+}
+
+.footer__brand-col {}
+
+.footer__logo {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 200;
+  font-size: var(--fs-sm);
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--raw-cream);
+  margin-bottom: var(--sp-3);
+}
+
+.footer__brand-text {
+  font-size: var(--fs-sm);
+  color: var(--raw-clay);
+  line-height: 1.8;
+  max-width: 300px;
+}
+
+.footer__col-title {
+  font-size: var(--fs-xs);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 400;
+  color: var(--raw-stone);
+  margin-bottom: var(--sp-3);
+}
+
+.footer__col-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.footer__col-links a {
+  font-size: var(--fs-sm);
+  color: var(--raw-clay);
+  font-weight: 200;
+  transition: color var(--dur-micro);
+  display: inline-block;
+}
+
+.footer__col-links a:hover {
+  color: var(--raw-cream);
+}
+
+.footer__divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(245,240,234,0.06);
+  margin-bottom: var(--sp-4);
+}
+
+.footer__bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+}
+
+.footer__copy {
+  font-size: var(--fs-xs);
+  color: var(--raw-clay);
+  font-weight: 200;
+}
+
+.footer__social {
+  display: flex;
+  gap: var(--sp-3);
+}
+
+.footer__social a {
+  font-size: var(--fs-xs);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--raw-clay);
+  font-weight: 200;
+  transition: color var(--dur-micro);
+}
+
+.footer__social a:hover {
+  color: var(--raw-cream);
+}
+
+.footer__locale {
+  font-size: var(--fs-xs);
+  color: var(--raw-clay);
+  font-weight: 200;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+}
+
+@media (max-width: 768px) {
+  .footer { padding: var(--sp-5) var(--sp-3) var(--sp-3); }
+  .footer__top {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-4);
+  }
+  .footer__brand-col {
+    grid-column: 1 / -1;
+  }
+  .footer__bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* ═══════════════════════════════════════
+   CURSOR EFFECT (desktop only)
+   ═══════════════════════════════════════ */
+
+.cursor-dot {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference;
+  transition: transform var(--dur-micro) var(--ease-out),
+              opacity var(--dur-micro);
+  opacity: 0;
+}
+
+.cursor-ring {
+  position: fixed;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(139, 69, 19, 0.35);
+  pointer-events: none;
+  z-index: 9998;
+  mix-blend-mode: difference;
+  transition: transform var(--dur-std) var(--ease-out),
+              width var(--dur-std) var(--ease-out),
+              height var(--dur-std) var(--ease-out),
+              opacity var(--dur-micro);
+  opacity: 0;
+  transform: translate(-50%, -50%);
+}
+
+.cursor-ring.hovering {
+  width: 60px;
+  height: 60px;
+  border-color: rgba(139, 69, 19, 0.6);
+}
+
+@media (max-width: 1024px) {
+  .cursor-dot, .cursor-ring { display: none !important; }
+}
+
+@media (pointer: coarse) {
+  .cursor-dot, .cursor-ring { display: none !important; }
+}
+
+/* ═══════════════════════════════════════
+   PARALLAX LAYER UTILITY
+   ═══════════════════════════════════════ */
+
+.parallax-wrap {
+  will-change: transform;
+}
+
+/* ═══════════════════════════════════════
+   PAGE LOAD OVERLAY
+   ═══════════════════════════════════════ */
+
+.loader {
+  position: fixed;
+  inset: 0;
+  background: var(--raw-ink);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.6s var(--ease-out), visibility 0.6s;
+}
+
+.loader.done {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.loader__text {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 200;
+  font-size: var(--fs-xs);
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--raw-cream);
+  animation: loaderPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes loaderPulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
 </style>
 </head>
 <body>
-<div class="label-bar"><strong>Enhanced</strong> — Generated with polanyi-design skill</div>
 
-<section class="pricing">
-  <h2>Simple, transparent pricing</h2>
-  <p>Start free. Scale when you're ready.</p>
+<!-- Page loader -->
+<div class="loader" id="loader" aria-hidden="true">
+  <span class="loader__text">Noir Atelier</span>
+</div>
 
-  <div class="toggle" id="toggle">
-    <button class="active" data-p="monthly">Monthly</button>
-    <button data-p="annual">Annual <span class="savings-badge">Save 17%</span></button>
+<!-- Custom cursor -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ════════ NAVIGATION ════════ -->
+<nav class="nav" id="nav" role="navigation" aria-label="Main navigation">
+  <a href="#" class="nav__logo">Noir Atelier</a>
+  <ul class="nav__links">
+    <li><a href="#collection" class="nav__link">Collection</a></li>
+    <li><a href="#story" class="nav__link">Atelier</a></li>
+    <li><a href="#lookbook" class="nav__link">Lookbook</a></li>
+    <li><a href="#newsletter" class="nav__link">Journal</a></li>
+  </ul>
+  <button class="nav__menu-btn" aria-label="Open menu">Menu</button>
+</nav>
+
+<!-- ════════ HERO ════════ -->
+<section class="hero" id="hero">
+  <div class="hero__bg">
+    <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1920&q=80&auto=format&fit=crop"
+         alt="Fashion model in dramatic lighting wearing dark tailored clothing"
+         loading="eager">
   </div>
 
-  <div class="cards">
-    <!-- Hobby — ghost CTA, lowest visual weight -->
-    <article class="card" role="region" aria-label="Hobby plan">
-      <div class="card-name">Hobby</div>
-      <p class="card-desc">For personal projects and experiments.</p>
-      <div class="price-block">
-        <span class="dollar">$</span>
-        <span class="amount" data-m="0" data-a="0">0</span>
-        <span class="period">/ mo</span>
-      </div>
-      <p class="card-sub">Free forever</p>
-      <button class="card-cta ghost">Get started</button>
-      <ul class="features" role="list">
-        <li class="feature-group">Includes</li>
-        <li><svg class="icon check" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg> 1 project</li>
-        <li><svg class="icon check" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg> 1 GB bandwidth</li>
-        <li><svg class="icon check" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg> Community support</li>
-        <li><svg class="icon check" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg> SSL included</li>
-      </ul>
-    </article>
-
-    <!-- Pro — protagonist, dark, elevated, badge breaks boundary -->
-    <article class="card featured" role="region" aria-label="Pro plan, most popular">
-      <div class="pop-badge">Most popular</div>
-      <div class="card-name">Pro</div>
-      <p class="card-desc" style="color:#9ca3af">For teams shipping to production daily.</p>
-      <div class="price-block">
-        <span class="dollar">$</span>
-        <span class="amount" data-m="20" data-a="16">20</span>
-        <span class="period">/ mo</span>
-      </div>
-      <p class="card-sub">per seat, billed monthly</p>
-      <button class="card-cta primary">Start 14-day trial</button>
-      <ul class="features" role="list">
-        <li class="feature-group">Everything in Hobby, plus</li>
-        <li><svg class="icon check" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg> Unlimited projects</li>
-        <li><svg class="icon check" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg> 100 GB bandwidth</li>
-        <li><svg class="icon check" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg> Preview deployments</li>
-        <li><svg class="icon check" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg> Team collaboration</li>
-        <li><svg class="icon check" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg> Priority support</li>
-        <li><svg class="icon check" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg> Analytics &amp; logs</li>
-      </ul>
-    </article>
-
-    <!-- Enterprise — secondary CTA weight -->
-    <article class="card" role="region" aria-label="Enterprise plan">
-      <div class="card-name">Enterprise</div>
-      <p class="card-desc">For organizations with advanced security and compliance.</p>
-      <div class="price-block">
-        <span class="amount" style="font-size:36px">Custom</span>
-      </div>
-      <p class="card-sub">Tailored to your organization</p>
-      <button class="card-cta dark">Talk to sales</button>
-      <ul class="features" role="list">
-        <li class="feature-group">Everything in Pro, plus</li>
-        <li><svg class="icon check" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg> SSO / SAML</li>
-        <li><svg class="icon check" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg> 99.99% SLA</li>
-        <li><svg class="icon check" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg> Dedicated support</li>
-        <li><svg class="icon check" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg> Custom contracts</li>
-      </ul>
-    </article>
+  <div class="hero__title-wrap" aria-hidden="true">
+    <div class="hero__title">NOIR</div>
   </div>
 
-  <p class="footer-note">All plans include SSL, CI/CD, and global CDN. <a href="#">Full feature comparison &rarr;</a></p>
+  <div class="hero__content">
+    <div class="hero__tagline">
+      <p>Where silence becomes structure and restraint becomes the most radical act of design.</p>
+    </div>
+    <div class="hero__meta">
+      <div class="hero__season t-mono">Autumn / Winter 2026</div>
+      <a href="#collection" class="hero__cta">
+        <span>Explore Collection</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="hero__scroll" aria-hidden="true">
+    <div class="hero__scroll-line"></div>
+  </div>
 </section>
 
+<!-- ════════ COLLECTION ════════ -->
+<section class="collection" id="collection">
+  <div class="collection__header">
+    <div class="reveal">
+      <span class="t-mono collection__label">New Arrivals</span>
+      <h2 class="t-display collection__title">The Quiet<br>Collection</h2>
+    </div>
+    <p class="t-body collection__intro reveal-right">
+      Six pieces that refuse to explain themselves. Each garment is a study in proportion, fabricated in Italian mills that have operated since 1897.
+    </p>
+  </div>
+
+  <div class="collection__grid stagger">
+    <article class="collection__item reveal-scale" aria-label="Structured Wool Coat">
+      <div class="collection__img-wrap">
+        <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800&q=80&auto=format&fit=crop"
+             alt="Structured wool coat in charcoal" loading="lazy">
+        <div class="collection__overlay">
+          <div>
+            <div class="collection__item-name">Structured Wool Coat</div>
+            <div class="collection__item-price t-mono">EUR 2,490</div>
+          </div>
+        </div>
+        <button class="collection__quick" aria-label="Quick view Structured Wool Coat">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M12 5v14M5 12h14"/>
+          </svg>
+        </button>
+      </div>
+    </article>
+
+    <article class="collection__item reveal-scale" aria-label="Draped Silk Blouse">
+      <div class="collection__img-wrap">
+        <img src="https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=800&q=80&auto=format&fit=crop"
+             alt="Draped silk blouse in ivory" loading="lazy">
+        <div class="collection__overlay">
+          <div>
+            <div class="collection__item-name">Draped Silk Blouse</div>
+            <div class="collection__item-price t-mono">EUR 890</div>
+          </div>
+        </div>
+        <button class="collection__quick" aria-label="Quick view Draped Silk Blouse">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M12 5v14M5 12h14"/>
+          </svg>
+        </button>
+      </div>
+    </article>
+
+    <article class="collection__item reveal-scale" aria-label="Oversized Cashmere Knit">
+      <div class="collection__img-wrap">
+        <img src="https://images.unsplash.com/photo-1434389677669-e08b4cda3a20?w=800&q=80&auto=format&fit=crop"
+             alt="Oversized cashmere knit in stone" loading="lazy">
+        <div class="collection__overlay">
+          <div>
+            <div class="collection__item-name">Oversized Cashmere Knit</div>
+            <div class="collection__item-price t-mono">EUR 1,340</div>
+          </div>
+        </div>
+        <button class="collection__quick" aria-label="Quick view Oversized Cashmere Knit">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M12 5v14M5 12h14"/>
+          </svg>
+        </button>
+      </div>
+    </article>
+
+    <article class="collection__item reveal-scale" aria-label="Tailored Linen Trousers">
+      <div class="collection__img-wrap">
+        <img src="https://images.unsplash.com/photo-1506629082955-511b1aa562c8?w=800&q=80&auto=format&fit=crop"
+             alt="Tailored linen trousers in ash" loading="lazy">
+        <div class="collection__overlay">
+          <div>
+            <div class="collection__item-name">Tailored Linen Trousers</div>
+            <div class="collection__item-price t-mono">EUR 760</div>
+          </div>
+        </div>
+        <button class="collection__quick" aria-label="Quick view Tailored Linen Trousers">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M12 5v14M5 12h14"/>
+          </svg>
+        </button>
+      </div>
+    </article>
+
+    <article class="collection__item reveal-scale" aria-label="Deconstructed Blazer">
+      <div class="collection__img-wrap">
+        <img src="https://images.unsplash.com/photo-1539533113208-f6df8cc8b543?w=800&q=80&auto=format&fit=crop"
+             alt="Deconstructed blazer in dark navy" loading="lazy">
+        <div class="collection__overlay">
+          <div>
+            <div class="collection__item-name">Deconstructed Blazer</div>
+            <div class="collection__item-price t-mono">EUR 1,870</div>
+          </div>
+        </div>
+        <button class="collection__quick" aria-label="Quick view Deconstructed Blazer">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M12 5v14M5 12h14"/>
+          </svg>
+        </button>
+      </div>
+    </article>
+
+    <article class="collection__item reveal-scale" aria-label="Column Dress">
+      <div class="collection__img-wrap">
+        <img src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=800&q=80&auto=format&fit=crop"
+             alt="Column dress in midnight black" loading="lazy">
+        <div class="collection__overlay">
+          <div>
+            <div class="collection__item-name">Column Dress</div>
+            <div class="collection__item-price t-mono">EUR 2,180</div>
+          </div>
+        </div>
+        <button class="collection__quick" aria-label="Quick view Column Dress">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M12 5v14M5 12h14"/>
+          </svg>
+        </button>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ════════ MARQUEE DIVIDER ════════ -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__inner">
+    <span class="marquee__text">Autumn Winter 2026</span>
+    <span class="marquee__dot"></span>
+    <span class="marquee__text">Made in Italy</span>
+    <span class="marquee__dot"></span>
+    <span class="marquee__text">Noir Atelier</span>
+    <span class="marquee__dot"></span>
+    <span class="marquee__text">The Quiet Collection</span>
+    <span class="marquee__dot"></span>
+    <span class="marquee__text">Autumn Winter 2026</span>
+    <span class="marquee__dot"></span>
+    <span class="marquee__text">Made in Italy</span>
+    <span class="marquee__dot"></span>
+    <span class="marquee__text">Noir Atelier</span>
+    <span class="marquee__dot"></span>
+    <span class="marquee__text">The Quiet Collection</span>
+    <span class="marquee__dot"></span>
+  </div>
+</div>
+
+<!-- ════════ BRAND STORY ════════ -->
+<section class="brand-story" id="story">
+  <div class="brand-story__image reveal-left">
+    <img src="https://images.unsplash.com/photo-1558171813-4c088753af8f?w=1200&q=80&auto=format&fit=crop"
+         alt="Atelier workshop with fabric bolts and tailoring tools" loading="lazy">
+  </div>
+  <div class="brand-story__content">
+    <span class="t-mono brand-story__eyebrow reveal">The Atelier</span>
+    <h2 class="t-display brand-story__title reveal">Built on<br>what remains<br>unsaid</h2>
+    <p class="t-body brand-story__text reveal">
+      Founded in 2019 in a converted tannery on the outskirts of Antwerp, Noir Atelier began as a rejection. A rejection of noise, of trend, of the compulsive acceleration that had hollowed contemporary fashion into spectacle.
+    </p>
+    <p class="t-body brand-story__text reveal">
+      Our founding designer, trained under the discipline of Rei Kawakubo and later in the ateliers of Lemaire, understood that true luxury is not ornamentation but the courage to subtract. Each piece is cut from a single bolt. No waste, no excess, no apology.
+    </p>
+    <blockquote class="t-editorial brand-story__quote reveal">
+      "The garment should disappear into the wearer. What remains is the person, more fully themselves."
+    </blockquote>
+    <div class="brand-story__year" aria-hidden="true">19</div>
+  </div>
+</section>
+
+<!-- ════════ LOOKBOOK ════════ -->
+<section class="lookbook" id="lookbook">
+  <div class="lookbook__header">
+    <div class="reveal">
+      <span class="t-mono" style="color: var(--text-secondary); display: block; margin-bottom: var(--sp-2);">AW26 Campaign</span>
+      <h2 class="t-display lookbook__title">Lookbook</h2>
+    </div>
+    <span class="t-mono lookbook__season-tag reveal-right">12 Looks / Shot in Antwerp</span>
+  </div>
+
+  <div class="lookbook__grid stagger">
+    <div class="lookbook__item reveal-scale">
+      <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=900&q=80&auto=format&fit=crop"
+           alt="Lookbook image: model in structured overcoat on concrete steps" loading="lazy">
+      <span class="lookbook__num">01</span>
+    </div>
+    <div class="lookbook__item reveal-scale">
+      <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=900&q=80&auto=format&fit=crop"
+           alt="Lookbook image: flowing silhouette against industrial backdrop" loading="lazy">
+      <span class="lookbook__num">02</span>
+    </div>
+    <div class="lookbook__item reveal-scale">
+      <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=900&q=80&auto=format&fit=crop"
+           alt="Lookbook image: tailored ensemble in neutral tones" loading="lazy">
+      <span class="lookbook__num">03</span>
+    </div>
+    <div class="lookbook__item reveal-scale">
+      <img src="https://images.unsplash.com/photo-1495385794356-15371f348c31?w=900&q=80&auto=format&fit=crop"
+           alt="Lookbook image: minimalist knitwear detail shot" loading="lazy">
+      <span class="lookbook__num">04</span>
+    </div>
+    <div class="lookbook__item reveal-scale">
+      <img src="https://images.unsplash.com/photo-1550614000-4895a10e1bfd?w=1400&q=80&auto=format&fit=crop"
+           alt="Lookbook image: wide landscape shot of model on empty road" loading="lazy">
+      <span class="lookbook__num">05</span>
+    </div>
+    <div class="lookbook__item reveal-scale">
+      <img src="https://images.unsplash.com/photo-1581044777550-4cfa60707998?w=900&q=80&auto=format&fit=crop"
+           alt="Lookbook image: evening wear in deep shadow" loading="lazy">
+      <span class="lookbook__num">06</span>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ NEWSLETTER ════════ -->
+<section class="newsletter" id="newsletter">
+  <div class="newsletter__visual">
+    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=1200&q=80&auto=format&fit=crop"
+         alt="Abstract textile close-up in warm tones" loading="lazy">
+    <div class="newsletter__visual-text reveal-left">
+      <p>First access.<br>No algorithm.<br>Just the work.</p>
+    </div>
+  </div>
+  <div class="newsletter__form-wrap">
+    <span class="t-mono newsletter__eyebrow reveal">The Journal</span>
+    <h2 class="t-display newsletter__title reveal">Stay close<br>to the cloth</h2>
+    <p class="t-body newsletter__desc reveal">
+      Dispatches from the atelier. Collection previews, process notes, and invitations to private viewings. Sent sparingly.
+    </p>
+    <form class="newsletter__form reveal" aria-label="Newsletter signup" onsubmit="event.preventDefault(); this.querySelector('button').textContent = 'Subscribed'; this.querySelector('button').disabled = true;">
+      <div class="newsletter__input-group">
+        <label for="nl-name" class="sr-only">Full Name</label>
+        <input type="text" id="nl-name" class="newsletter__input" placeholder="Full Name" autocomplete="name" required>
+      </div>
+      <div class="newsletter__input-group">
+        <label for="nl-email" class="sr-only">Email Address</label>
+        <input type="email" id="nl-email" class="newsletter__input" placeholder="Email Address" autocomplete="email" required>
+      </div>
+      <button type="submit" class="newsletter__submit">Subscribe</button>
+      <p class="newsletter__privacy">
+        By subscribing you agree to our <a href="#">Privacy Policy</a>.
+        We respect your data and never share it with third parties.
+      </p>
+    </form>
+  </div>
+</section>
+
+<!-- ════════ FOOTER ════════ -->
+<footer class="footer">
+  <div class="footer__top">
+    <div class="footer__brand-col">
+      <div class="footer__logo">Noir Atelier</div>
+      <p class="footer__brand-text">
+        Contemporary fashion house founded in Antwerp, 2019.
+        All garments designed and manufactured in Europe.
+      </p>
+    </div>
+    <div>
+      <h3 class="footer__col-title">Shop</h3>
+      <ul class="footer__col-links">
+        <li><a href="#">New Arrivals</a></li>
+        <li><a href="#">Outerwear</a></li>
+        <li><a href="#">Tailoring</a></li>
+        <li><a href="#">Knitwear</a></li>
+        <li><a href="#">Accessories</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="footer__col-title">Atelier</h3>
+      <ul class="footer__col-links">
+        <li><a href="#">Our Story</a></li>
+        <li><a href="#">Sustainability</a></li>
+        <li><a href="#">Craftsmanship</a></li>
+        <li><a href="#">Stockists</a></li>
+        <li><a href="#">Press</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="footer__col-title">Support</h3>
+      <ul class="footer__col-links">
+        <li><a href="#">Size Guide</a></li>
+        <li><a href="#">Shipping</a></li>
+        <li><a href="#">Returns</a></li>
+        <li><a href="#">Care Guide</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer__divider"></div>
+
+  <div class="footer__bottom">
+    <span class="footer__copy">&copy; 2026 Noir Atelier. All rights reserved.</span>
+    <div class="footer__social">
+      <a href="#" aria-label="Instagram">Instagram</a>
+      <a href="#" aria-label="Pinterest">Pinterest</a>
+      <a href="#" aria-label="LinkedIn">LinkedIn</a>
+    </div>
+    <span class="footer__locale">EN / EUR</span>
+  </div>
+</footer>
+
+<!-- Screen-reader only class -->
+<style>
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+</style>
+
 <script>
-const toggle = document.getElementById('toggle');
-const btns = toggle.querySelectorAll('button');
-btns.forEach(b => b.addEventListener('click', () => {
-  btns.forEach(x => x.classList.remove('active'));
-  b.classList.add('active');
-  const isAnnual = b.dataset.p === 'annual';
-  toggle.classList.toggle('annual', isAnnual);
-  document.querySelectorAll('.amount[data-m]').forEach(el => {
-    const target = isAnnual ? el.dataset.a : el.dataset.m;
-    el.style.opacity = '0'; el.style.transform = 'translateY(-4px)';
-    setTimeout(() => {
-      el.textContent = target;
-      el.style.transform = 'translateY(4px)';
-      requestAnimationFrame(() => { el.style.opacity = '1'; el.style.transform = 'translateY(0)'; });
-    }, 150);
+(function() {
+  'use strict';
+
+  /* ═══════════════════════════════════
+     PAGE LOADER
+     ═══════════════════════════════════ */
+  window.addEventListener('load', function() {
+    setTimeout(function() {
+      document.getElementById('loader').classList.add('done');
+    }, 600);
   });
-  document.querySelectorAll('.card-sub').forEach(el => {
-    if (el.textContent.includes('seat'))
-      el.textContent = isAnnual ? 'per seat, billed annually' : 'per seat, billed monthly';
+
+  /* ═══════════════════════════════════
+     SCROLL REVEAL (Intersection Observer)
+     ═══════════════════════════════════ */
+  var revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+
+  if ('IntersectionObserver' in window) {
+    var revealObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.15,
+      rootMargin: '0px 0px -60px 0px'
+    });
+
+    revealEls.forEach(function(el) {
+      revealObserver.observe(el);
+    });
+  } else {
+    // Fallback: show all immediately
+    revealEls.forEach(function(el) {
+      el.classList.add('is-visible');
+    });
+  }
+
+  /* ═══════════════════════════════════
+     NAV SCROLL BEHAVIOR
+     ═══════════════════════════════════ */
+  var nav = document.getElementById('nav');
+  var lastScroll = 0;
+
+  window.addEventListener('scroll', function() {
+    var scrollY = window.pageYOffset;
+    if (scrollY > 80) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+    lastScroll = scrollY;
+  }, { passive: true });
+
+  /* ═══════════════════════════════════
+     CUSTOM CURSOR
+     ═══════════════════════════════════ */
+  var dot = document.getElementById('cursorDot');
+  var ring = document.getElementById('cursorRing');
+  var mouseX = 0, mouseY = 0;
+  var ringX = 0, ringY = 0;
+  var cursorVisible = false;
+
+  // Only enable on non-touch, large screens
+  var isTouchOrSmall = window.matchMedia('(pointer: coarse)').matches ||
+                       window.matchMedia('(max-width: 1024px)').matches;
+
+  if (!isTouchOrSmall) {
+    document.addEventListener('mousemove', function(e) {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      dot.style.left = mouseX + 'px';
+      dot.style.top = mouseY + 'px';
+      dot.style.transform = 'translate(-50%, -50%)';
+
+      if (!cursorVisible) {
+        cursorVisible = true;
+        dot.style.opacity = '1';
+        ring.style.opacity = '1';
+      }
+    });
+
+    // Smoothed ring follows cursor
+    function animateRing() {
+      ringX += (mouseX - ringX) * 0.12;
+      ringY += (mouseY - ringY) * 0.12;
+      ring.style.left = ringX + 'px';
+      ring.style.top = ringY + 'px';
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+
+    // Expand ring on interactive elements
+    var hoverTargets = document.querySelectorAll('a, button, .collection__item, .lookbook__item, input');
+    hoverTargets.forEach(function(el) {
+      el.addEventListener('mouseenter', function() { ring.classList.add('hovering'); });
+      el.addEventListener('mouseleave', function() { ring.classList.remove('hovering'); });
+    });
+
+    // Hide cursor when leaving viewport
+    document.addEventListener('mouseleave', function() {
+      dot.style.opacity = '0';
+      ring.style.opacity = '0';
+      cursorVisible = false;
+    });
+    document.addEventListener('mouseenter', function() {
+      dot.style.opacity = '1';
+      ring.style.opacity = '1';
+      cursorVisible = true;
+    });
+  }
+
+  /* ═══════════════════════════════════
+     PARALLAX ON HERO IMAGE
+     Subtle, performance-conscious
+     ═══════════════════════════════════ */
+  var heroBg = document.querySelector('.hero__bg img');
+  var heroSection = document.getElementById('hero');
+  var ticking = false;
+
+  if (!isTouchOrSmall && heroBg) {
+    window.addEventListener('scroll', function() {
+      if (!ticking) {
+        requestAnimationFrame(function() {
+          var rect = heroSection.getBoundingClientRect();
+          if (rect.bottom > 0) {
+            var offset = window.pageYOffset * 0.3;
+            heroBg.style.transform = 'scale(1.05) translateY(' + offset + 'px)';
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+  }
+
+  /* ═══════════════════════════════════
+     SUBTLE IMAGE TILT ON COLLECTION
+     ═══════════════════════════════════ */
+  if (!isTouchOrSmall) {
+    var collectionItems = document.querySelectorAll('.collection__img-wrap');
+    collectionItems.forEach(function(wrap) {
+      wrap.addEventListener('mousemove', function(e) {
+        var rect = wrap.getBoundingClientRect();
+        var x = (e.clientX - rect.left) / rect.width - 0.5;
+        var y = (e.clientY - rect.top) / rect.height - 0.5;
+        var img = wrap.querySelector('img');
+        img.style.transform = 'scale(1.06) translate(' + (x * -8) + 'px, ' + (y * -8) + 'px)';
+      });
+      wrap.addEventListener('mouseleave', function() {
+        var img = wrap.querySelector('img');
+        img.style.transform = 'scale(1)';
+      });
+    });
+  }
+
+  /* ═══════════════════════════════════
+     SMOOTH ANCHOR SCROLLING
+     ═══════════════════════════════════ */
+  document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+    anchor.addEventListener('click', function(e) {
+      var target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
   });
-}));
+
+})();
 </script>
+
 </body>
 </html>
