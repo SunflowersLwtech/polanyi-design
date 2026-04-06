@@ -16,6 +16,18 @@ An operational thinking system grounded in tacit knowledge theory.
 
 [Install](#-install) · [See the Difference](#-see-the-difference) · [How It Works](#-how-it-works) · [Measured Impact](#-measured-impact) · [Credits](#credits)
 
+<br>
+
+**Same prompt. Different design intelligence.**
+
+| Without Skill | With polanyi-design |
+|:---:|:---:|
+| ![Baseline](showcase/screenshot-baseline.png) | ![Enhanced](showcase/screenshot-enhanced.png) |
+| Blue gradients, centered everything, Inter | Deep green, Playfair+Inter pairing, 60/40 editorial split |
+
+> Both pages generated from the identical prompt: *"设计一个软件服务公司的 landing page"*<br>
+> [Live baseline](https://sunflowerslwtech.github.io/polanyi-design/showcase/landing-baseline.html) · [Live enhanced](https://sunflowerslwtech.github.io/polanyi-design/showcase/landing-enhanced.html) · [Side-by-side comparison](https://sunflowerslwtech.github.io/polanyi-design/showcase/index.html)
+
 </div>
 
 ---
@@ -74,7 +86,7 @@ cat ~/.claude/skills/polanyi-design/SKILL.md | head -5
 Both pages were generated in fresh Claude Code sessions with **identical prompts**.
 The only difference: one session had `polanyi-design` loaded.
 
-**[View Baseline (no skill)](showcase/landing-baseline.html)** · **[View Enhanced (with skill)](showcase/landing-enhanced.html)**
+**[View Baseline (no skill)](https://sunflowerslwtech.github.io/polanyi-design/showcase/landing-baseline.html)** · **[View Enhanced (with skill)](https://sunflowerslwtech.github.io/polanyi-design/showcase/landing-enhanced.html)**
 
 <table>
 <tr>
@@ -139,7 +151,7 @@ The only difference: one session had `polanyi-design` loaded.
 
 Also included: a luxury fashion website (NOIR ATELIER) with the same A/B methodology:
 
-**[View Baseline](showcase/demo-baseline.html)** · **[View Enhanced](showcase/demo-enhanced.html)**
+**[View Baseline](https://sunflowerslwtech.github.io/polanyi-design/showcase/demo-baseline.html)** · **[View Enhanced](https://sunflowerslwtech.github.io/polanyi-design/showcase/demo-enhanced.html)**
 
 | Without Skill | With Skill |
 |---|---|
@@ -202,8 +214,11 @@ Six patterns from [frontend-design research](references/CREDITS.md):
 
 ## 📊 Measured Impact
 
-Evaluated via **blind A/B testing** across 5 design scenarios,
-3 rounds of iteration:
+Evaluated via **A/B testing** across 5 design prompts (landing page diagnosis, dashboard layout,
+token architecture, component API review, responsive strategy), each scored on 5 dimensions
+(0-10 scale) by an independent Claude evaluator agent. The evaluator received both responses
+without knowing which had the skill loaded. 3 rounds of iteration, self-evaluated — take
+scores as directional, not peer-reviewed:
 
 | Dimension | Avg Improvement |
 |-----------|:--------------:|
@@ -261,6 +276,6 @@ MIT License — See [LICENSE](LICENSE) for full text.
 
 <br>
 
-**[View Demos](showcase/)** · **[SKILL.md](SKILL.md)** · **[Full Credits](references/CREDITS.md)**
+**[View Live Demos](https://sunflowerslwtech.github.io/polanyi-design/showcase/)** · **[SKILL.md](SKILL.md)** · **[Full Credits](references/CREDITS.md)**
 
 </div>

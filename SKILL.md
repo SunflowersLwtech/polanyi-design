@@ -77,7 +77,7 @@ Six patterns for encoding design taste that rules cannot capture:
 
 1. **Negation > Assertion.** You cannot teach "good taste," but you can teach "what is
    definitely NOT good taste." When generating design, explicitly ban the defaults:
-   - NEVER: Inter/Roboto/Arial as the only font without deliberate reason
+   - NEVER: Inter/Roboto/Arial as the SOLE typeface — pair with a contrasting display font or don't use at all
    - NEVER: unmodified Tailwind shadow-md + rounded-lg on every surface
    - NEVER: purple gradient on white background
    - NEVER: identical spacing between all sections
