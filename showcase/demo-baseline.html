@@ -3,2066 +3,290 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NOIR ATELIER - Contemporary Fashion House</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<title>NOIR ATELIER — Baseline (No Skill)</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-/* ═══════════════════════════════════════════
-   RESET & FOUNDATIONS
-   ═══════════════════════════════════════════ */
-*, *::before, *::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+/* ============================================
+   BASELINE: Standard "luxury" template approach
+   - Centered everything
+   - Black background + white text
+   - Uniform grid
+   - Inter (most common SaaS/template font)
+   - Symmetric, safe, predictable
+   ============================================ */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  /* Palette: warm neutrals with a dark anchor */
-  --noir: #0a0a0a;
-  --charcoal: #1a1a1a;
-  --graphite: #2d2d2d;
-  --slate: #4a4a4a;
-  --stone: #8a8178;
-  --warm-gray: #b5ada5;
-  --sand: #c9bfb0;
-  --parchment: #e8e0d4;
-  --cream: #f5f0e8;
-  --ivory: #faf8f4;
-  --white: #fefefe;
-  --accent: #8b7355;
-  --accent-light: #a6916f;
-  --accent-muted: rgba(139, 115, 85, 0.12);
-
-  /* Typography scale */
-  --font-display: 'Cormorant Garamond', 'Georgia', serif;
-  --font-editorial: 'Playfair Display', 'Georgia', serif;
-  --font-body: 'Inter', 'Helvetica Neue', sans-serif;
-
-  /* Spacing */
-  --space-xs: 0.5rem;
-  --space-sm: 1rem;
-  --space-md: 2rem;
-  --space-lg: 4rem;
-  --space-xl: 6rem;
-  --space-2xl: 10rem;
-
-  /* Easing */
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
-  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
-}
-
-html {
-  scroll-behavior: smooth;
-  font-size: 16px;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --black: #000000;
+  --dark: #111111;
+  --gray: #888888;
+  --light-gray: #cccccc;
+  --white: #ffffff;
+  --accent: #c9a96e;
 }
 
 body {
-  font-family: var(--font-body);
-  color: var(--charcoal);
-  background: var(--ivory);
+  font-family: 'Inter', sans-serif;
+  background: var(--black);
+  color: var(--white);
   overflow-x: hidden;
-  line-height: 1.6;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+/* Nav — standard fixed top */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 24px 48px;
+  background: rgba(0,0,0,0.8);
+  backdrop-filter: blur(10px);
 }
-
-img {
-  display: block;
-  max-width: 100%;
-  height: auto;
-}
-
-button {
-  font-family: inherit;
-  cursor: pointer;
-  border: none;
-  background: none;
-}
-
-/* ═══════════════════════════════════════════
-   CUSTOM CURSOR
-   ═══════════════════════════════════════════ */
-.cursor-dot {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 8px;
-  height: 8px;
-  background: var(--charcoal);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 10000;
-  mix-blend-mode: difference;
-  transition: transform 0.15s var(--ease-out-expo);
-}
-
-.cursor-ring {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 40px;
-  height: 40px;
-  border: 1px solid rgba(26, 26, 26, 0.3);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 10000;
-  mix-blend-mode: difference;
-  transition: width 0.4s var(--ease-out-expo),
-              height 0.4s var(--ease-out-expo),
-              border-color 0.4s ease;
-}
-
-.cursor-ring.hover {
-  width: 64px;
-  height: 64px;
-  border-color: rgba(139, 115, 85, 0.6);
-}
-
-@media (hover: none) {
-  .cursor-dot, .cursor-ring { display: none; }
-}
-
-/* ═══════════════════════════════════════════
-   PRELOADER
-   ═══════════════════════════════════════════ */
-.preloader {
-  position: fixed;
-  inset: 0;
-  background: var(--noir);
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  transition: opacity 0.8s var(--ease-out-expo),
-              visibility 0.8s;
-}
-
-.preloader.hidden {
-  opacity: 0;
-  visibility: hidden;
-}
-
-.preloader-brand {
-  font-family: var(--font-display);
-  font-size: clamp(1.5rem, 4vw, 3rem);
-  color: var(--cream);
-  letter-spacing: 0.5em;
-  text-transform: uppercase;
-  font-weight: 300;
-  opacity: 0;
-  animation: preloaderFadeIn 1s 0.2s var(--ease-out-expo) forwards;
-}
-
-.preloader-line {
-  width: 60px;
-  height: 1px;
-  background: var(--accent);
-  margin-top: 1.5rem;
-  transform: scaleX(0);
-  animation: preloaderLine 1.5s 0.5s var(--ease-out-expo) forwards;
-}
-
-@keyframes preloaderFadeIn {
-  to { opacity: 1; }
-}
-
-@keyframes preloaderLine {
-  to { transform: scaleX(1); }
-}
-
-/* ═══════════════════════════════════════════
-   REVEAL ANIMATIONS
-   ═══════════════════════════════════════════ */
-.reveal {
-  opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 1s var(--ease-out-expo),
-              transform 1s var(--ease-out-expo);
-}
-
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.reveal-left {
-  opacity: 0;
-  transform: translateX(-60px);
-  transition: opacity 1s var(--ease-out-expo),
-              transform 1s var(--ease-out-expo);
-}
-
-.reveal-left.visible {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.reveal-right {
-  opacity: 0;
-  transform: translateX(60px);
-  transition: opacity 1s var(--ease-out-expo),
-              transform 1s var(--ease-out-expo);
-}
-
-.reveal-right.visible {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.reveal-scale {
-  opacity: 0;
-  transform: scale(0.92);
-  transition: opacity 1.2s var(--ease-out-expo),
-              transform 1.2s var(--ease-out-expo);
-}
-
-.reveal-scale.visible {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.stagger > * {
-  transition-delay: calc(var(--i, 0) * 0.1s);
-}
-
-/* ═══════════════════════════════════════════
-   NAVIGATION
-   ═══════════════════════════════════════════ */
-.nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  padding: 1.5rem 3rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  transition: background 0.5s ease, padding 0.4s ease, backdrop-filter 0.5s ease;
-}
-
-.nav.scrolled {
-  background: rgba(250, 248, 244, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  padding: 1rem 3rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
-}
-
-.nav-logo {
-  font-family: var(--font-display);
-  font-size: 1.25rem;
-  letter-spacing: 0.45em;
-  text-transform: uppercase;
-  font-weight: 400;
-  color: var(--white);
-  transition: color 0.5s ease;
-}
-
-.nav.scrolled .nav-logo {
-  color: var(--charcoal);
-}
-
-.nav-links {
-  display: flex;
-  gap: 2.5rem;
-  list-style: none;
-}
-
+.logo { font-size: 14px; letter-spacing: 0.3em; font-weight: 500; }
+.nav-links { display: flex; gap: 32px; }
 .nav-links a {
-  font-family: var(--font-body);
-  font-size: 0.7rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.7);
-  font-weight: 400;
-  position: relative;
-  transition: color 0.4s ease;
+  color: var(--gray); font-size: 12px; text-decoration: none;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  transition: color 0.3s;
 }
+.nav-links a:hover { color: var(--white); }
 
-.nav.scrolled .nav-links a {
-  color: var(--slate);
-}
-
-.nav-links a::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: 0;
-  width: 0;
-  height: 1px;
-  background: var(--accent);
-  transition: width 0.4s var(--ease-out-expo);
-}
-
-.nav-links a:hover::after {
-  width: 100%;
-}
-
-.nav-links a:hover {
-  color: var(--white);
-}
-
-.nav.scrolled .nav-links a:hover {
-  color: var(--charcoal);
-}
-
-.nav-menu-btn {
-  display: none;
-  flex-direction: column;
-  gap: 5px;
-  padding: 4px;
-}
-
-.nav-menu-btn span {
-  display: block;
-  width: 24px;
-  height: 1px;
-  background: var(--white);
-  transition: transform 0.4s var(--ease-out-expo),
-              opacity 0.3s ease,
-              background 0.5s ease;
-}
-
-.nav.scrolled .nav-menu-btn span {
-  background: var(--charcoal);
-}
-
-.nav-menu-btn.active span:nth-child(1) {
-  transform: translateY(6px) rotate(45deg);
-}
-
-.nav-menu-btn.active span:nth-child(2) {
-  opacity: 0;
-}
-
-.nav-menu-btn.active span:nth-child(3) {
-  transform: translateY(-6px) rotate(-45deg);
-}
-
-/* Mobile Menu Overlay */
-.mobile-menu {
-  position: fixed;
-  inset: 0;
-  background: var(--noir);
-  z-index: 999;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2rem;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.6s var(--ease-out-expo),
-              visibility 0.6s;
-}
-
-.mobile-menu.open {
-  opacity: 1;
-  visibility: visible;
-}
-
-.mobile-menu a {
-  font-family: var(--font-display);
-  font-size: clamp(1.8rem, 5vw, 3rem);
-  color: var(--cream);
-  letter-spacing: 0.15em;
-  font-weight: 300;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.5s var(--ease-out-expo),
-              transform 0.5s var(--ease-out-expo),
-              color 0.3s ease;
-}
-
-.mobile-menu.open a {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.mobile-menu a:hover {
-  color: var(--accent-light);
-}
-
-.mobile-menu.open a:nth-child(1) { transition-delay: 0.1s; }
-.mobile-menu.open a:nth-child(2) { transition-delay: 0.15s; }
-.mobile-menu.open a:nth-child(3) { transition-delay: 0.2s; }
-.mobile-menu.open a:nth-child(4) { transition-delay: 0.25s; }
-.mobile-menu.open a:nth-child(5) { transition-delay: 0.3s; }
-
-@media (max-width: 768px) {
-  .nav { padding: 1.2rem 1.5rem; }
-  .nav.scrolled { padding: 1rem 1.5rem; }
-  .nav-links { display: none; }
-  .nav-menu-btn { display: flex; }
-}
-
-/* ═══════════════════════════════════════════
-   HERO SECTION
-   ═══════════════════════════════════════════ */
+/* Hero — centered, standard overlay gradient */
 .hero {
-  position: relative;
   height: 100vh;
-  min-height: 700px;
-  display: flex;
-  align-items: flex-end;
-  overflow: hidden;
-  background: var(--noir);
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  text-align: center;
+  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)),
+    url('https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1920&q=80') center/cover;
+  padding: 0 48px;
 }
-
-.hero-bg {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
+.hero h1 {
+  font-size: 64px; font-weight: 300; letter-spacing: 0.2em;
+  text-transform: uppercase; margin-bottom: 16px;
 }
-
-.hero-bg img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0.55;
-  transform: scale(1.08);
-  transition: transform 8s var(--ease-out-expo);
-  filter: contrast(1.05) brightness(0.9);
+.hero p {
+  font-size: 14px; color: var(--gray); letter-spacing: 0.15em;
+  text-transform: uppercase; margin-bottom: 40px;
 }
-
-.hero.loaded .hero-bg img {
-  transform: scale(1);
+.hero-btn {
+  display: inline-block; padding: 14px 48px;
+  border: 1px solid var(--white); color: var(--white);
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  text-decoration: none; transition: all 0.3s;
 }
+.hero-btn:hover { background: var(--white); color: var(--black); }
 
-.hero-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(10, 10, 10, 0.85) 0%,
-    rgba(10, 10, 10, 0.3) 40%,
-    rgba(10, 10, 10, 0.1) 70%,
-    rgba(10, 10, 10, 0.25) 100%
-  );
-  z-index: 1;
-}
-
-.hero-content {
-  position: relative;
-  z-index: 2;
-  padding: 0 clamp(2rem, 5vw, 6rem) clamp(4rem, 8vh, 8rem);
-  max-width: 900px;
-}
-
-.hero-season {
-  font-family: var(--font-body);
-  font-size: 0.65rem;
-  letter-spacing: 0.4em;
-  text-transform: uppercase;
-  color: var(--accent-light);
-  margin-bottom: 1.5rem;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: heroReveal 1s 1.8s var(--ease-out-expo) forwards;
-}
-
-.hero-title {
-  font-family: var(--font-display);
-  font-size: clamp(3.5rem, 9vw, 8rem);
-  font-weight: 300;
-  color: var(--cream);
-  line-height: 0.95;
-  letter-spacing: -0.01em;
-  margin-bottom: 1.5rem;
-}
-
-.hero-title span {
-  display: block;
-  overflow: hidden;
-}
-
-.hero-title .line-inner {
-  display: block;
-  opacity: 0;
-  transform: translateY(100%);
-  animation: heroLineReveal 1.2s var(--ease-out-expo) forwards;
-}
-
-.hero-title span:nth-child(1) .line-inner { animation-delay: 1.4s; }
-.hero-title span:nth-child(2) .line-inner { animation-delay: 1.55s; }
-.hero-title span:nth-child(3) .line-inner { animation-delay: 1.7s; }
-
-.hero-title em {
-  font-family: var(--font-editorial);
-  font-style: italic;
-  font-weight: 400;
-}
-
-.hero-subtitle {
-  font-family: var(--font-body);
-  font-size: clamp(0.8rem, 1.2vw, 0.95rem);
-  color: rgba(232, 224, 212, 0.6);
-  font-weight: 300;
-  line-height: 1.7;
-  max-width: 440px;
-  margin-bottom: 2.5rem;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: heroReveal 1s 2s var(--ease-out-expo) forwards;
-}
-
-.hero-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 1rem;
-  font-size: 0.7rem;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: var(--cream);
-  font-weight: 400;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: heroReveal 1s 2.2s var(--ease-out-expo) forwards;
-  transition: gap 0.4s var(--ease-out-expo);
-}
-
-.hero-cta:hover {
-  gap: 1.5rem;
-}
-
-.hero-cta-line {
-  display: block;
-  width: 48px;
-  height: 1px;
-  background: var(--accent);
-  transition: width 0.4s var(--ease-out-expo);
-}
-
-.hero-cta:hover .hero-cta-line {
-  width: 72px;
-}
-
-.hero-scroll {
-  position: absolute;
-  bottom: 2.5rem;
-  right: 3rem;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.8rem;
-  opacity: 0;
-  animation: heroReveal 1s 2.6s var(--ease-out-expo) forwards;
-}
-
-.hero-scroll-text {
-  font-size: 0.6rem;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: rgba(232, 224, 212, 0.4);
-  writing-mode: vertical-rl;
-}
-
-.hero-scroll-line {
-  width: 1px;
-  height: 50px;
-  background: linear-gradient(to bottom, var(--accent), transparent);
-  animation: scrollPulse 2s ease-in-out infinite;
-}
-
-@keyframes heroReveal {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes heroLineReveal {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes scrollPulse {
-  0%, 100% { opacity: 0.4; transform: scaleY(1); }
-  50% { opacity: 1; transform: scaleY(1.2); }
-}
-
-@media (max-width: 768px) {
-  .hero-scroll { display: none; }
-  .hero-content { padding: 0 1.5rem 3rem; }
-}
-
-/* ═══════════════════════════════════════════
-   EDITORIAL STRIP (between hero & collection)
-   ═══════════════════════════════════════════ */
-.editorial-strip {
-  background: var(--noir);
-  padding: 5rem 0;
-  overflow: hidden;
-}
-
-.marquee {
-  display: flex;
-  animation: marqueeScroll 30s linear infinite;
-}
-
-.marquee-content {
-  display: flex;
-  align-items: center;
-  gap: 3rem;
-  flex-shrink: 0;
-  padding-right: 3rem;
-}
-
-.marquee-content span {
-  font-family: var(--font-display);
-  font-size: clamp(1.2rem, 2.5vw, 2rem);
-  color: rgba(232, 224, 212, 0.15);
-  letter-spacing: 0.4em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  font-weight: 300;
-}
-
-.marquee-content .dot {
-  width: 4px;
-  height: 4px;
-  background: var(--accent);
-  border-radius: 50%;
-  flex-shrink: 0;
-  opacity: 0.5;
-}
-
-@keyframes marqueeScroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-/* ═══════════════════════════════════════════
-   SECTION HEADER (reusable)
-   ═══════════════════════════════════════════ */
-.section-header {
-  margin-bottom: clamp(3rem, 5vw, 5rem);
-}
-
-.section-label {
-  font-family: var(--font-body);
-  font-size: 0.65rem;
-  letter-spacing: 0.35em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.section-label::before {
-  content: '';
-  width: 32px;
-  height: 1px;
-  background: var(--accent);
-}
-
+/* Collection — uniform 3-column grid */
+.section { padding: 120px 48px; }
 .section-title {
-  font-family: var(--font-display);
-  font-size: clamp(2.2rem, 5vw, 4rem);
-  font-weight: 300;
-  line-height: 1.1;
-  letter-spacing: -0.01em;
-  color: var(--charcoal);
+  text-align: center; font-size: 11px;
+  letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--gray); margin-bottom: 48px;
 }
-
-.section-title em {
-  font-family: var(--font-editorial);
-  font-style: italic;
-  font-weight: 400;
-}
-
-/* ═══════════════════════════════════════════
-   NEW COLLECTION
-   ═══════════════════════════════════════════ */
-.collection {
-  padding: clamp(5rem, 10vw, 10rem) clamp(1.5rem, 4vw, 4rem);
-  background: var(--ivory);
-}
-
-.collection-inner {
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
 .collection-grid {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: auto;
-  gap: 1.5rem;
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 24px; max-width: 1200px; margin: 0 auto;
+}
+.product-card { position: relative; overflow: hidden; cursor: pointer; }
+.product-card img {
+  width: 100%; aspect-ratio: 3/4; object-fit: cover;
+  transition: transform 0.6s;
+}
+.product-card:hover img { transform: scale(1.05); }
+.product-info {
+  padding: 16px 0;
+}
+.product-info h3 {
+  font-size: 13px; font-weight: 400; letter-spacing: 0.1em;
+  text-transform: uppercase; margin-bottom: 4px;
+}
+.product-info .price {
+  font-size: 13px; color: var(--gray);
 }
 
-.collection-item {
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-}
-
-.collection-item:nth-child(1) {
-  grid-column: 1 / 6;
-  grid-row: 1 / 2;
-}
-
-.collection-item:nth-child(2) {
-  grid-column: 6 / 10;
-  grid-row: 1 / 2;
-}
-
-.collection-item:nth-child(3) {
-  grid-column: 10 / 13;
-  grid-row: 1 / 3;
-}
-
-.collection-item:nth-child(4) {
-  grid-column: 1 / 4;
-  grid-row: 2 / 3;
-}
-
-.collection-item:nth-child(5) {
-  grid-column: 4 / 8;
-  grid-row: 2 / 3;
-}
-
-.collection-item:nth-child(6) {
-  grid-column: 8 / 10;
-  grid-row: 2 / 3;
-}
-
-.collection-item .item-image-wrap {
-  position: relative;
-  overflow: hidden;
-  aspect-ratio: auto;
-}
-
-.collection-item:nth-child(1) .item-image-wrap { aspect-ratio: 4/5; }
-.collection-item:nth-child(2) .item-image-wrap { aspect-ratio: 3/4; }
-.collection-item:nth-child(3) .item-image-wrap { aspect-ratio: 2/5; }
-.collection-item:nth-child(4) .item-image-wrap { aspect-ratio: 3/4; }
-.collection-item:nth-child(5) .item-image-wrap { aspect-ratio: 4/5; }
-.collection-item:nth-child(6) .item-image-wrap { aspect-ratio: 3/4; }
-
-.collection-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.8s var(--ease-out-expo),
-              filter 0.6s ease;
-  filter: saturate(0.85);
-}
-
-.collection-item:hover img {
-  transform: scale(1.06);
-  filter: saturate(1);
-}
-
-.item-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(10, 10, 10, 0.7) 0%,
-    rgba(10, 10, 10, 0) 50%
-  );
-  opacity: 0;
-  transition: opacity 0.5s ease;
-}
-
-.collection-item:hover .item-overlay {
-  opacity: 1;
-}
-
-.item-info {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 1.5rem;
-  transform: translateY(10px);
-  opacity: 0;
-  transition: transform 0.5s var(--ease-out-expo),
-              opacity 0.5s ease;
-}
-
-.collection-item:hover .item-info {
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.item-name {
-  font-family: var(--font-display);
-  font-size: 1.1rem;
-  color: var(--cream);
-  letter-spacing: 0.06em;
-  font-weight: 400;
-  margin-bottom: 0.25rem;
-}
-
-.item-category {
-  font-family: var(--font-body);
-  font-size: 0.65rem;
-  color: rgba(232, 224, 212, 0.5);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-}
-
-.item-price {
-  font-family: var(--font-body);
-  font-size: 0.8rem;
-  color: var(--sand);
-  margin-top: 0.5rem;
-  font-weight: 300;
-}
-
-@media (max-width: 1024px) {
-  .collection-grid {
-    grid-template-columns: repeat(6, 1fr);
-  }
-  .collection-item:nth-child(1) { grid-column: 1 / 4; grid-row: 1; }
-  .collection-item:nth-child(2) { grid-column: 4 / 7; grid-row: 1; }
-  .collection-item:nth-child(3) { grid-column: 1 / 3; grid-row: 2; }
-  .collection-item:nth-child(4) { grid-column: 3 / 5; grid-row: 2; }
-  .collection-item:nth-child(5) { grid-column: 5 / 7; grid-row: 2; }
-  .collection-item:nth-child(6) { grid-column: 2 / 6; grid-row: 3; }
-  .collection-item:nth-child(3) .item-image-wrap { aspect-ratio: 3/4; }
-}
-
-@media (max-width: 600px) {
-  .collection-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 0.75rem;
-  }
-  .collection-item:nth-child(1) { grid-column: 1 / 3; grid-row: auto; }
-  .collection-item:nth-child(2) { grid-column: 1; grid-row: auto; }
-  .collection-item:nth-child(3) { grid-column: 2; grid-row: auto; }
-  .collection-item:nth-child(4) { grid-column: 1 / 3; grid-row: auto; }
-  .collection-item:nth-child(5) { grid-column: 1; grid-row: auto; }
-  .collection-item:nth-child(6) { grid-column: 2; grid-row: auto; }
-  .collection-item:nth-child(n) .item-image-wrap { aspect-ratio: 3/4; }
-  .item-info { opacity: 1; transform: none; }
-  .item-overlay { opacity: 1; }
-}
-
-/* ═══════════════════════════════════════════
-   BRAND STORY / ABOUT
-   ═══════════════════════════════════════════ */
+/* About — centered text block */
 .about {
-  padding: clamp(5rem, 12vw, 12rem) clamp(1.5rem, 4vw, 4rem);
-  background: var(--cream);
+  max-width: 640px; margin: 0 auto;
+  text-align: center; padding: 120px 48px;
+}
+.about h2 {
+  font-size: 36px; font-weight: 300; letter-spacing: 0.1em;
+  margin-bottom: 32px;
+}
+.about p {
+  font-size: 15px; line-height: 1.8; color: var(--light-gray);
+  margin-bottom: 20px;
 }
 
-.about-inner {
-  max-width: 1400px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: clamp(3rem, 6vw, 8rem);
-  align-items: center;
-}
-
-.about-visual {
-  position: relative;
-}
-
-.about-image-main {
-  width: 85%;
-  aspect-ratio: 3/4;
-  overflow: hidden;
-  position: relative;
-}
-
-.about-image-main img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: saturate(0.8) contrast(1.05);
-}
-
-.about-image-accent {
-  position: absolute;
-  bottom: -3rem;
-  right: -1rem;
-  width: 50%;
-  aspect-ratio: 4/5;
-  overflow: hidden;
-  box-shadow: 24px 24px 60px rgba(0, 0, 0, 0.08);
-}
-
-.about-image-accent img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: saturate(0.75);
-}
-
-.about-image-frame {
-  position: absolute;
-  top: -1.5rem;
-  right: 2rem;
-  width: 40%;
-  aspect-ratio: 1;
-  border: 1px solid var(--sand);
-  z-index: -1;
-}
-
-.about-text {
-  padding: 2rem 0;
-}
-
-.about-text .section-label {
-  margin-bottom: 1.5rem;
-}
-
-.about-headline {
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 3.5vw, 3.2rem);
-  font-weight: 300;
-  line-height: 1.15;
-  color: var(--charcoal);
-  margin-bottom: 2rem;
-}
-
-.about-headline em {
-  font-family: var(--font-editorial);
-  font-style: italic;
-  font-weight: 400;
-  color: var(--accent);
-}
-
-.about-body {
-  font-family: var(--font-body);
-  font-size: 0.88rem;
-  line-height: 1.85;
-  color: var(--slate);
-  font-weight: 300;
-  margin-bottom: 1.5rem;
-  max-width: 480px;
-}
-
-.about-detail {
-  display: flex;
-  gap: 3rem;
-  margin-top: 3rem;
-  padding-top: 2rem;
-  border-top: 1px solid rgba(0, 0, 0, 0.06);
-}
-
-.about-detail-item h4 {
-  font-family: var(--font-display);
-  font-size: 2.5rem;
-  font-weight: 300;
-  color: var(--charcoal);
-  line-height: 1;
-}
-
-.about-detail-item p {
-  font-size: 0.65rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--stone);
-  margin-top: 0.4rem;
-}
-
-@media (max-width: 900px) {
-  .about-inner {
-    grid-template-columns: 1fr;
-    gap: 4rem;
-  }
-  .about-visual {
-    max-width: 500px;
-    margin: 0 auto;
-  }
-  .about-image-accent {
-    bottom: -2rem;
-    right: 0;
-  }
-}
-
-/* ═══════════════════════════════════════════
-   PHILOSOPHY BANNER
-   ═══════════════════════════════════════════ */
-.philosophy {
-  position: relative;
-  padding: clamp(6rem, 14vw, 14rem) clamp(1.5rem, 4vw, 4rem);
-  background: var(--charcoal);
-  overflow: hidden;
-}
-
-.philosophy-bg {
-  position: absolute;
-  inset: 0;
-  opacity: 0.1;
-}
-
-.philosophy-bg img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.philosophy-content {
-  position: relative;
-  z-index: 1;
-  max-width: 900px;
-  margin: 0 auto;
-  text-align: center;
-}
-
-.philosophy-quote {
-  font-family: var(--font-display);
-  font-size: clamp(1.8rem, 4vw, 3.5rem);
-  font-weight: 300;
-  color: var(--cream);
-  line-height: 1.3;
-  letter-spacing: 0.01em;
-}
-
-.philosophy-quote em {
-  font-family: var(--font-editorial);
-  font-style: italic;
-  font-weight: 400;
-  color: var(--accent-light);
-}
-
-.philosophy-attr {
-  font-family: var(--font-body);
-  font-size: 0.65rem;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: var(--stone);
-  margin-top: 2.5rem;
-}
-
-.philosophy-line {
-  width: 40px;
-  height: 1px;
-  background: var(--accent);
-  margin: 1.5rem auto 0;
-}
-
-/* ═══════════════════════════════════════════
-   LOOKBOOK GALLERY
-   ═══════════════════════════════════════════ */
-.lookbook {
-  padding: clamp(5rem, 10vw, 10rem) clamp(1.5rem, 4vw, 4rem);
-  background: var(--ivory);
-}
-
-.lookbook-inner {
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-.lookbook-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: clamp(3rem, 5vw, 5rem);
-}
-
-.lookbook-link {
-  font-size: 0.7rem;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: var(--slate);
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  transition: gap 0.4s var(--ease-out-expo);
-}
-
-.lookbook-link:hover {
-  gap: 1.2rem;
-}
-
-.lookbook-link-line {
-  width: 32px;
-  height: 1px;
-  background: var(--accent);
-  transition: width 0.4s var(--ease-out-expo);
-}
-
-.lookbook-link:hover .lookbook-link-line {
-  width: 48px;
-}
-
-/* Asymmetric masonry-inspired grid */
+/* Lookbook — uniform 2-column grid */
 .lookbook-grid {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-auto-rows: minmax(100px, auto);
-  gap: 1.2rem;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 24px; max-width: 1200px; margin: 0 auto;
 }
-
-.lookbook-item {
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
+.lookbook-grid img {
+  width: 100%; aspect-ratio: 4/5; object-fit: cover;
+  filter: grayscale(20%);
+  transition: filter 0.5s;
 }
+.lookbook-grid img:hover { filter: grayscale(0%); }
 
-.lookbook-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 1s var(--ease-out-expo),
-              filter 0.6s ease;
-  filter: saturate(0.8);
-}
-
-.lookbook-item:hover img {
-  transform: scale(1.05);
-  filter: saturate(1) brightness(1.02);
-}
-
-.lookbook-item::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border: 1px solid transparent;
-  transition: border-color 0.5s ease;
-}
-
-.lookbook-item:hover::after {
-  border-color: rgba(139, 115, 85, 0.3);
-}
-
-/* Intentionally asymmetric placement */
-.lookbook-item:nth-child(1) {
-  grid-column: 1 / 6;
-  grid-row: 1 / 4;
-}
-
-.lookbook-item:nth-child(2) {
-  grid-column: 6 / 9;
-  grid-row: 1 / 3;
-}
-
-.lookbook-item:nth-child(3) {
-  grid-column: 9 / 13;
-  grid-row: 1 / 5;
-}
-
-.lookbook-item:nth-child(4) {
-  grid-column: 1 / 4;
-  grid-row: 4 / 7;
-}
-
-.lookbook-item:nth-child(5) {
-  grid-column: 4 / 9;
-  grid-row: 3 / 7;
-}
-
-.lookbook-item:nth-child(6) {
-  grid-column: 9 / 11;
-  grid-row: 5 / 7;
-}
-
-.lookbook-item:nth-child(7) {
-  grid-column: 11 / 13;
-  grid-row: 5 / 7;
-}
-
-.lookbook-caption {
-  position: absolute;
-  bottom: 1rem;
-  left: 1rem;
-  font-family: var(--font-body);
-  font-size: 0.6rem;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.6);
-  opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 0.4s ease, transform 0.4s var(--ease-out-expo);
-}
-
-.lookbook-item:hover .lookbook-caption {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-@media (max-width: 900px) {
-  .lookbook-grid {
-    grid-template-columns: repeat(6, 1fr);
-    grid-auto-rows: 200px;
-  }
-  .lookbook-item:nth-child(1) { grid-column: 1 / 4; grid-row: 1 / 3; }
-  .lookbook-item:nth-child(2) { grid-column: 4 / 7; grid-row: 1 / 2; }
-  .lookbook-item:nth-child(3) { grid-column: 4 / 7; grid-row: 2 / 4; }
-  .lookbook-item:nth-child(4) { grid-column: 1 / 3; grid-row: 3 / 5; }
-  .lookbook-item:nth-child(5) { grid-column: 3 / 7; grid-row: 4 / 6; }
-  .lookbook-item:nth-child(6) { grid-column: 1 / 3; grid-row: 5 / 6; }
-  .lookbook-item:nth-child(7) { grid-column: 1 / 4; grid-row: 6 / 7; }
-}
-
-@media (max-width: 600px) {
-  .lookbook-grid {
-    grid-template-columns: 1fr 1fr;
-    grid-auto-rows: 220px;
-    gap: 0.6rem;
-  }
-  .lookbook-item:nth-child(1) { grid-column: 1 / 3; grid-row: auto; }
-  .lookbook-item:nth-child(n+2) { grid-column: auto; grid-row: auto; }
-  .lookbook-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
-}
-
-/* ═══════════════════════════════════════════
-   NEWSLETTER
-   ═══════════════════════════════════════════ */
+/* Newsletter — centered */
 .newsletter {
-  padding: clamp(5rem, 10vw, 10rem) clamp(1.5rem, 4vw, 4rem);
-  background: var(--parchment);
+  text-align: center; padding: 120px 48px;
+  background: var(--dark);
 }
-
-.newsletter-inner {
-  max-width: 700px;
-  margin: 0 auto;
-  text-align: center;
+.newsletter h2 {
+  font-size: 24px; font-weight: 300; letter-spacing: 0.15em;
+  margin-bottom: 16px;
 }
-
-.newsletter-label {
-  font-family: var(--font-body);
-  font-size: 0.65rem;
-  letter-spacing: 0.35em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 1rem;
-}
-
-.newsletter-heading {
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 4vw, 3.2rem);
-  font-weight: 300;
-  color: var(--charcoal);
-  line-height: 1.15;
-  margin-bottom: 1rem;
-}
-
-.newsletter-heading em {
-  font-family: var(--font-editorial);
-  font-style: italic;
-  font-weight: 400;
-}
-
-.newsletter-sub {
-  font-size: 0.85rem;
-  color: var(--slate);
-  font-weight: 300;
-  line-height: 1.7;
-  margin-bottom: 2.5rem;
-  max-width: 450px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
+.newsletter p { color: var(--gray); font-size: 13px; margin-bottom: 32px; }
 .newsletter-form {
-  display: flex;
-  gap: 0;
-  max-width: 480px;
-  margin: 0 auto;
-  border-bottom: 1px solid var(--warm-gray);
-  transition: border-color 0.4s ease;
+  display: flex; gap: 0; max-width: 480px; margin: 0 auto;
 }
-
-.newsletter-form:focus-within {
-  border-color: var(--accent);
+.newsletter-form input {
+  flex: 1; padding: 14px 20px;
+  background: transparent; border: 1px solid #333;
+  color: var(--white); font-family: inherit; font-size: 13px;
 }
-
-.newsletter-input {
-  flex: 1;
-  border: none;
-  background: transparent;
-  padding: 1rem 0;
-  font-family: var(--font-body);
-  font-size: 0.85rem;
-  color: var(--charcoal);
-  font-weight: 300;
-  outline: none;
+.newsletter-form input::placeholder { color: #555; }
+.newsletter-form button {
+  padding: 14px 32px; background: var(--white); color: var(--black);
+  border: 1px solid var(--white); font-family: inherit; font-size: 11px;
+  letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer;
+  transition: all 0.3s;
 }
+.newsletter-form button:hover { background: var(--accent); border-color: var(--accent); }
 
-.newsletter-input::placeholder {
-  color: var(--warm-gray);
-  font-weight: 300;
+/* Footer — standard 3-column */
+footer {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 48px; padding: 80px 48px;
+  border-top: 1px solid #222;
+  font-size: 12px; color: var(--gray);
 }
-
-.newsletter-btn {
-  font-family: var(--font-body);
-  font-size: 0.65rem;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: var(--charcoal);
-  padding: 1rem 0 1rem 1rem;
-  transition: color 0.3s ease;
-  position: relative;
+footer h4 {
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--white); margin-bottom: 16px;
 }
+footer a { color: var(--gray); text-decoration: none; }
+footer ul { list-style: none; }
+footer li { margin-bottom: 8px; }
+.footer-copy { text-align: center; padding: 24px; font-size: 11px; color: #444; }
 
-.newsletter-btn::after {
-  content: '';
-  position: absolute;
-  bottom: calc(1rem - 1px);
-  right: 0;
-  width: 0;
-  height: 1px;
-  background: var(--accent);
-  transition: width 0.4s var(--ease-out-expo);
-}
-
-.newsletter-btn:hover {
-  color: var(--accent);
-}
-
-.newsletter-btn:hover::after {
-  width: 100%;
-}
-
-.newsletter-privacy {
-  font-size: 0.7rem;
-  color: var(--warm-gray);
-  margin-top: 1.5rem;
-  font-weight: 300;
-}
-
-@media (max-width: 480px) {
-  .newsletter-form {
-    flex-direction: column;
-    border-bottom: none;
-  }
-  .newsletter-input {
-    border-bottom: 1px solid var(--warm-gray);
-    padding: 0.8rem 0;
-  }
-  .newsletter-btn {
-    padding: 1rem 0;
-    text-align: center;
-  }
-}
-
-/* ═══════════════════════════════════════════
-   FOOTER
-   ═══════════════════════════════════════════ */
-.footer {
-  background: var(--noir);
-  padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 4vw, 4rem) 2.5rem;
-  color: var(--cream);
-}
-
-.footer-inner {
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-.footer-top {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
-  gap: clamp(2rem, 4vw, 4rem);
-  padding-bottom: clamp(3rem, 5vw, 5rem);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.footer-brand .footer-logo {
-  font-family: var(--font-display);
-  font-size: 1.4rem;
-  letter-spacing: 0.4em;
-  text-transform: uppercase;
-  font-weight: 300;
-  margin-bottom: 1.5rem;
-}
-
-.footer-brand p {
-  font-size: 0.82rem;
-  color: rgba(232, 224, 212, 0.4);
-  line-height: 1.7;
-  font-weight: 300;
-  max-width: 300px;
-}
-
-.footer-col h4 {
-  font-family: var(--font-body);
-  font-size: 0.6rem;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: var(--stone);
-  margin-bottom: 1.5rem;
-  font-weight: 400;
-}
-
-.footer-col ul {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-}
-
-.footer-col a {
-  font-size: 0.82rem;
-  color: rgba(232, 224, 212, 0.5);
-  font-weight: 300;
-  transition: color 0.3s ease;
-}
-
-.footer-col a:hover {
-  color: var(--cream);
-}
-
-.footer-bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: 2.5rem;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-.footer-copy {
-  font-size: 0.7rem;
-  color: rgba(232, 224, 212, 0.25);
-  font-weight: 300;
-}
-
-.footer-social {
-  display: flex;
-  gap: 1.5rem;
-}
-
-.footer-social a {
-  font-size: 0.65rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba(232, 224, 212, 0.3);
-  transition: color 0.3s ease;
-}
-
-.footer-social a:hover {
-  color: var(--accent-light);
-}
-
+/* Responsive — basic */
 @media (max-width: 768px) {
-  .footer-top {
-    grid-template-columns: 1fr 1fr;
-    gap: 2.5rem;
-  }
-  .footer-brand {
-    grid-column: 1 / 3;
-  }
+  nav { padding: 16px 24px; }
+  .nav-links { display: none; }
+  .hero h1 { font-size: 36px; }
+  .section { padding: 80px 24px; }
+  .collection-grid { grid-template-columns: 1fr 1fr; }
+  .lookbook-grid { grid-template-columns: 1fr; }
+  footer { grid-template-columns: 1fr; gap: 32px; }
 }
-
 @media (max-width: 480px) {
-  .footer-top {
-    grid-template-columns: 1fr;
-  }
-  .footer-brand {
-    grid-column: auto;
-  }
-  .footer-bottom {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-}
-
-/* ═══════════════════════════════════════════
-   IMAGE SHIMMER LOADING
-   ═══════════════════════════════════════════ */
-.img-placeholder {
-  background: linear-gradient(
-    110deg,
-    var(--parchment) 8%,
-    var(--cream) 18%,
-    var(--parchment) 33%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 1.5s linear infinite;
-}
-
-@keyframes shimmer {
-  to { background-position: -200% 0; }
-}
-
-/* ═══════════════════════════════════════════
-   PARALLAX OFFSET (applied via JS)
-   ═══════════════════════════════════════════ */
-.parallax-slow {
-  will-change: transform;
+  .collection-grid { grid-template-columns: 1fr; }
+  .hero h1 { font-size: 28px; letter-spacing: 0.1em; }
+  .newsletter-form { flex-direction: column; }
 }
 </style>
 </head>
 <body>
 
-<!-- Preloader -->
-<div class="preloader" id="preloader">
-  <div class="preloader-brand">Noir Atelier</div>
-  <div class="preloader-line"></div>
-</div>
-
-<!-- Custom Cursor -->
-<div class="cursor-dot" id="cursorDot"></div>
-<div class="cursor-ring" id="cursorRing"></div>
-
-<!-- Navigation -->
-<nav class="nav" id="nav">
-  <a href="#" class="nav-logo">Noir Atelier</a>
-  <ul class="nav-links">
-    <li><a href="#collection">Collection</a></li>
-    <li><a href="#about">Maison</a></li>
-    <li><a href="#lookbook">Lookbook</a></li>
-    <li><a href="#newsletter">Journal</a></li>
-  </ul>
-  <button class="nav-menu-btn" id="menuBtn" aria-label="Toggle menu">
-    <span></span>
-    <span></span>
-    <span></span>
-  </button>
+<nav>
+  <div class="logo">NOIR ATELIER</div>
+  <div class="nav-links">
+    <a href="#collection">Collection</a>
+    <a href="#about">About</a>
+    <a href="#lookbook">Lookbook</a>
+    <a href="#contact">Contact</a>
+  </div>
 </nav>
 
-<!-- Mobile Menu -->
-<div class="mobile-menu" id="mobileMenu">
-  <a href="#collection" class="mobile-link">Collection</a>
-  <a href="#about" class="mobile-link">Maison</a>
-  <a href="#lookbook" class="mobile-link">Lookbook</a>
-  <a href="#newsletter" class="mobile-link">Journal</a>
-  <a href="#" class="mobile-link">Atelier</a>
-</div>
-
-<!-- ═══════════════════════════════════════════
-     HERO SECTION
-     ═══════════════════════════════════════════ -->
-<section class="hero" id="hero">
-  <div class="hero-bg">
-    <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1920&q=80&auto=format&fit=crop"
-         alt="Fashion editorial"
-         loading="eager">
-  </div>
-  <div class="hero-overlay"></div>
-  <div class="hero-content">
-    <p class="hero-season">Autumn / Winter 2026</p>
-    <h1 class="hero-title">
-      <span><span class="line-inner">Between</span></span>
-      <span><span class="line-inner"><em>Shadow</em></span></span>
-      <span><span class="line-inner">& Form</span></span>
-    </h1>
-    <p class="hero-subtitle">
-      A meditation on restraint. The new collection explores the tension
-      between structure and softness, rendered in materials that age with quiet grace.
-    </p>
-    <a href="#collection" class="hero-cta">
-      Explore the Collection
-      <span class="hero-cta-line"></span>
-    </a>
-  </div>
-  <div class="hero-scroll">
-    <span class="hero-scroll-text">Scroll</span>
-    <div class="hero-scroll-line"></div>
-  </div>
+<section class="hero">
+  <h1>Noir Atelier</h1>
+  <p>Autumn / Winter 2026</p>
+  <a href="#collection" class="hero-btn">Explore Collection</a>
 </section>
 
-<!-- ═══════════════════════════════════════════
-     EDITORIAL STRIP
-     ═══════════════════════════════════════════ -->
-<div class="editorial-strip">
-  <div class="marquee">
-    <div class="marquee-content">
-      <span>Tailored Precision</span><span class="dot"></span>
-      <span>Woven Heritage</span><span class="dot"></span>
-      <span>Quiet Luxury</span><span class="dot"></span>
-      <span>Understated Form</span><span class="dot"></span>
-      <span>Material Integrity</span><span class="dot"></span>
-      <span>Intentional Design</span><span class="dot"></span>
-      <span>Atelier Craft</span><span class="dot"></span>
-      <span>Considered Beauty</span><span class="dot"></span>
+<section class="section" id="collection">
+  <div class="section-title">New Collection</div>
+  <div class="collection-grid">
+    <div class="product-card">
+      <img src="https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?w=600&q=80" alt="Wool Overcoat">
+      <div class="product-info"><h3>Wool Overcoat</h3><span class="price">$1,890</span></div>
     </div>
-    <div class="marquee-content" aria-hidden="true">
-      <span>Tailored Precision</span><span class="dot"></span>
-      <span>Woven Heritage</span><span class="dot"></span>
-      <span>Quiet Luxury</span><span class="dot"></span>
-      <span>Understated Form</span><span class="dot"></span>
-      <span>Material Integrity</span><span class="dot"></span>
-      <span>Intentional Design</span><span class="dot"></span>
-      <span>Atelier Craft</span><span class="dot"></span>
-      <span>Considered Beauty</span><span class="dot"></span>
+    <div class="product-card">
+      <img src="https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=600&q=80" alt="Silk Blouse">
+      <div class="product-info"><h3>Silk Blouse</h3><span class="price">$680</span></div>
     </div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════
-     NEW COLLECTION
-     ═══════════════════════════════════════════ -->
-<section class="collection" id="collection">
-  <div class="collection-inner">
-    <div class="section-header reveal">
-      <p class="section-label">New Arrivals</p>
-      <h2 class="section-title">The Autumn <em>Archive</em></h2>
+    <div class="product-card">
+      <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=600&q=80" alt="Tailored Trousers">
+      <div class="product-info"><h3>Tailored Trousers</h3><span class="price">$920</span></div>
     </div>
-    <div class="collection-grid stagger">
-      <!-- Item 1 -->
-      <div class="collection-item reveal-scale" style="--i:0">
-        <div class="item-image-wrap">
-          <img src="https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?w=800&q=80&auto=format&fit=crop"
-               alt="Structured wool overcoat" loading="lazy">
-          <div class="item-overlay"></div>
-          <div class="item-info">
-            <p class="item-name">The Lucerne Coat</p>
-            <p class="item-category">Outerwear</p>
-            <p class="item-price">&euro; 2,890</p>
-          </div>
-        </div>
-      </div>
-      <!-- Item 2 -->
-      <div class="collection-item reveal-scale" style="--i:1">
-        <div class="item-image-wrap">
-          <img src="https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=800&q=80&auto=format&fit=crop"
-               alt="Silk drape blouse" loading="lazy">
-          <div class="item-overlay"></div>
-          <div class="item-info">
-            <p class="item-name">Atelier Drape Blouse</p>
-            <p class="item-category">Ready to Wear</p>
-            <p class="item-price">&euro; 980</p>
-          </div>
-        </div>
-      </div>
-      <!-- Item 3 -->
-      <div class="collection-item reveal-scale" style="--i:2">
-        <div class="item-image-wrap">
-          <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=600&q=80&auto=format&fit=crop"
-               alt="Tailored column dress" loading="lazy">
-          <div class="item-overlay"></div>
-          <div class="item-info">
-            <p class="item-name">Column Dress</p>
-            <p class="item-category">Evening</p>
-            <p class="item-price">&euro; 3,450</p>
-          </div>
-        </div>
-      </div>
-      <!-- Item 4 -->
-      <div class="collection-item reveal-scale" style="--i:3">
-        <div class="item-image-wrap">
-          <img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&q=80&auto=format&fit=crop"
-               alt="Wide-leg trouser" loading="lazy">
-          <div class="item-overlay"></div>
-          <div class="item-info">
-            <p class="item-name">Palazzo Trouser</p>
-            <p class="item-category">Tailoring</p>
-            <p class="item-price">&euro; 1,120</p>
-          </div>
-        </div>
-      </div>
-      <!-- Item 5 -->
-      <div class="collection-item reveal-scale" style="--i:4">
-        <div class="item-image-wrap">
-          <img src="https://images.unsplash.com/photo-1581044777550-4cfa60707998?w=800&q=80&auto=format&fit=crop"
-               alt="Cashmere knit" loading="lazy">
-          <div class="item-overlay"></div>
-          <div class="item-info">
-            <p class="item-name">Heirloom Knit</p>
-            <p class="item-category">Knitwear</p>
-            <p class="item-price">&euro; 1,650</p>
-          </div>
-        </div>
-      </div>
-      <!-- Item 6 -->
-      <div class="collection-item reveal-scale" style="--i:5">
-        <div class="item-image-wrap">
-          <img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&q=80&auto=format&fit=crop"
-               alt="Leather carry-all" loading="lazy">
-          <div class="item-overlay"></div>
-          <div class="item-info">
-            <p class="item-name">Archive Carry-All</p>
-            <p class="item-category">Accessories</p>
-            <p class="item-price">&euro; 2,200</p>
-          </div>
-        </div>
-      </div>
+    <div class="product-card">
+      <img src="https://images.unsplash.com/photo-1558171813-4c088753af8f?w=600&q=80" alt="Cashmere Knit">
+      <div class="product-info"><h3>Cashmere Knit</h3><span class="price">$1,240</span></div>
+    </div>
+    <div class="product-card">
+      <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600&q=80" alt="Leather Jacket">
+      <div class="product-info"><h3>Leather Jacket</h3><span class="price">$2,450</span></div>
+    </div>
+    <div class="product-card">
+      <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&q=80" alt="Evening Dress">
+      <div class="product-info"><h3>Evening Dress</h3><span class="price">$3,100</span></div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════
-     BRAND STORY
-     ═══════════════════════════════════════════ -->
 <section class="about" id="about">
-  <div class="about-inner">
-    <div class="about-visual reveal-left">
-      <div class="about-image-frame parallax-slow"></div>
-      <div class="about-image-main">
-        <img src="https://images.unsplash.com/photo-1558171813-4c088753af8f?w=900&q=80&auto=format&fit=crop"
-             alt="Atelier workshop" loading="lazy">
-      </div>
-      <div class="about-image-accent">
-        <img src="https://images.unsplash.com/photo-1507680434567-5739c80be1ac?w=600&q=80&auto=format&fit=crop"
-             alt="Fabric detail" loading="lazy">
-      </div>
-    </div>
-    <div class="about-text reveal-right">
-      <p class="section-label">The Maison</p>
-      <h2 class="about-headline">
-        Where <em>patience</em><br>
-        becomes fabric
-      </h2>
-      <p class="about-body">
-        Founded in a converted Parisian atelier, Noir Atelier began as a rejection
-        of speed. Each garment is developed over months, not weeks. We source from
-        multigenerational mills in northern Italy, work with Japanese dye masters,
-        and finish every piece by hand in our workshop.
-      </p>
-      <p class="about-body">
-        The result is clothing that resists trends entirely. Garments designed
-        to become more beautiful with wearing, more personal with time. Not fashion
-        as spectacle, but as a private, lasting pleasure.
-      </p>
-      <div class="about-detail">
-        <div class="about-detail-item">
-          <h4>2009</h4>
-          <p>Founded</p>
-        </div>
-        <div class="about-detail-item">
-          <h4>48</h4>
-          <p>Artisans</p>
-        </div>
-        <div class="about-detail-item">
-          <h4>7</h4>
-          <p>Mill Partners</p>
-        </div>
-      </div>
-    </div>
+  <h2>Our Story</h2>
+  <p>Founded in 2018, Noir Atelier represents the intersection of minimalist design and exceptional craftsmanship. Each piece is conceived in our Paris atelier and brought to life by artisans who share our commitment to timeless elegance.</p>
+  <p>We believe in the power of restraint — that true luxury lies not in excess, but in the careful selection of materials, the precision of cut, and the quiet confidence of understated design.</p>
+</section>
+
+<section class="section" id="lookbook">
+  <div class="section-title">Lookbook</div>
+  <div class="lookbook-grid">
+    <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=800&q=80" alt="Look 1">
+    <img src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=800&q=80" alt="Look 2">
+    <img src="https://images.unsplash.com/photo-1495385794356-15371f348c31?w=800&q=80" alt="Look 3">
+    <img src="https://images.unsplash.com/photo-1581044777550-4cfa60707998?w=800&q=80" alt="Look 4">
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════
-     PHILOSOPHY BANNER
-     ═══════════════════════════════════════════ -->
-<section class="philosophy">
-  <div class="philosophy-bg">
-    <img src="https://images.unsplash.com/photo-1445205170230-053b83016050?w=1920&q=80&auto=format&fit=crop"
-         alt="Texture detail" loading="lazy">
-  </div>
-  <div class="philosophy-content reveal">
-    <blockquote class="philosophy-quote">
-      &ldquo;We believe in clothing that asks nothing of the wearer except to be
-      <em>worn</em>. Nothing louder than confidence, nothing more current
-      than conviction.&rdquo;
-    </blockquote>
-    <p class="philosophy-attr">Elise Marchetti, Creative Director</p>
-    <div class="philosophy-line"></div>
-  </div>
+<section class="newsletter" id="contact">
+  <h2>Stay Informed</h2>
+  <p>Subscribe to receive updates on new collections and exclusive events.</p>
+  <form class="newsletter-form" onsubmit="event.preventDefault()">
+    <input type="email" placeholder="Your email address">
+    <button type="submit">Subscribe</button>
+  </form>
 </section>
 
-<!-- ═══════════════════════════════════════════
-     LOOKBOOK
-     ═══════════════════════════════════════════ -->
-<section class="lookbook" id="lookbook">
-  <div class="lookbook-inner">
-    <div class="lookbook-header">
-      <div class="section-header reveal" style="margin-bottom:0">
-        <p class="section-label">AW26 Campaign</p>
-        <h2 class="section-title"><em>Still</em> Portraits</h2>
-      </div>
-      <a href="#" class="lookbook-link reveal">
-        View full lookbook
-        <span class="lookbook-link-line"></span>
-      </a>
-    </div>
-    <div class="lookbook-grid stagger">
-      <div class="lookbook-item reveal-scale" style="--i:0">
-        <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=900&q=80&auto=format&fit=crop"
-             alt="Lookbook 1" loading="lazy">
-        <span class="lookbook-caption">Look 01</span>
-      </div>
-      <div class="lookbook-item reveal-scale" style="--i:1">
-        <img src="https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=700&q=80&auto=format&fit=crop"
-             alt="Lookbook 2" loading="lazy">
-        <span class="lookbook-caption">Look 02</span>
-      </div>
-      <div class="lookbook-item reveal-scale" style="--i:2">
-        <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=900&q=80&auto=format&fit=crop"
-             alt="Lookbook 3" loading="lazy">
-        <span class="lookbook-caption">Look 03</span>
-      </div>
-      <div class="lookbook-item reveal-scale" style="--i:3">
-        <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=700&q=80&auto=format&fit=crop"
-             alt="Lookbook 4" loading="lazy">
-        <span class="lookbook-caption">Look 04</span>
-      </div>
-      <div class="lookbook-item reveal-scale" style="--i:4">
-        <img src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=900&q=80&auto=format&fit=crop"
-             alt="Lookbook 5" loading="lazy">
-        <span class="lookbook-caption">Look 05</span>
-      </div>
-      <div class="lookbook-item reveal-scale" style="--i:5">
-        <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=500&q=80&auto=format&fit=crop"
-             alt="Lookbook 6" loading="lazy">
-        <span class="lookbook-caption">Look 06</span>
-      </div>
-      <div class="lookbook-item reveal-scale" style="--i:6">
-        <img src="https://images.unsplash.com/photo-1545291730-faff8ca1d4b0?w=500&q=80&auto=format&fit=crop"
-             alt="Lookbook 7" loading="lazy">
-        <span class="lookbook-caption">Look 07</span>
-      </div>
-    </div>
+<footer>
+  <div>
+    <h4>Noir Atelier</h4>
+    <p>Contemporary luxury<br>fashion house.<br>Paris, France.</p>
   </div>
-</section>
-
-<!-- ═══════════════════════════════════════════
-     NEWSLETTER
-     ═══════════════════════════════════════════ -->
-<section class="newsletter" id="newsletter">
-  <div class="newsletter-inner reveal">
-    <p class="newsletter-label">Private Correspondence</p>
-    <h2 class="newsletter-heading">Join the <em>Atelier</em></h2>
-    <p class="newsletter-sub">
-      Receive early access to new collections, atelier notes,
-      and invitations to private viewings. Delivered sparingly.
-    </p>
-    <form class="newsletter-form" onsubmit="return false;">
-      <input type="email" class="newsletter-input"
-             placeholder="Your email address" required
-             aria-label="Email address">
-      <button type="submit" class="newsletter-btn">Subscribe</button>
-    </form>
-    <p class="newsletter-privacy">
-      We respect your privacy. Unsubscribe at any time.
-    </p>
+  <div>
+    <h4>Navigation</h4>
+    <ul>
+      <li><a href="#">Collection</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Lookbook</a></li>
+      <li><a href="#">Stores</a></li>
+    </ul>
   </div>
-</section>
-
-<!-- ═══════════════════════════════════════════
-     FOOTER
-     ═══════════════════════════════════════════ -->
-<footer class="footer">
-  <div class="footer-inner">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <p class="footer-logo">Noir Atelier</p>
-        <p>
-          A contemporary fashion house devoted to material
-          integrity, deliberate design, and the enduring
-          beauty of restraint.
-        </p>
-      </div>
-      <div class="footer-col">
-        <h4>Explore</h4>
-        <ul>
-          <li><a href="#">New Collection</a></li>
-          <li><a href="#">Ready to Wear</a></li>
-          <li><a href="#">Accessories</a></li>
-          <li><a href="#">Archive</a></li>
-          <li><a href="#">Lookbook</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Maison</h4>
-        <ul>
-          <li><a href="#">Our Story</a></li>
-          <li><a href="#">Atelier</a></li>
-          <li><a href="#">Sustainability</a></li>
-          <li><a href="#">Careers</a></li>
-          <li><a href="#">Press</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Client Care</h4>
-        <ul>
-          <li><a href="#">Contact</a></li>
-          <li><a href="#">Shipping</a></li>
-          <li><a href="#">Returns</a></li>
-          <li><a href="#">Size Guide</a></li>
-          <li><a href="#">Stores</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p class="footer-copy">&copy; 2026 Noir Atelier. All rights reserved.</p>
-      <div class="footer-social">
-        <a href="#">Instagram</a>
-        <a href="#">Pinterest</a>
-        <a href="#">LinkedIn</a>
-      </div>
-    </div>
+  <div>
+    <h4>Follow</h4>
+    <ul>
+      <li><a href="#">Instagram</a></li>
+      <li><a href="#">Pinterest</a></li>
+      <li><a href="#">Twitter</a></li>
+    </ul>
   </div>
 </footer>
+<div class="footer-copy">&copy; 2026 Noir Atelier. All rights reserved.</div>
 
-<!-- ═══════════════════════════════════════════
-     SCRIPTS
-     ═══════════════════════════════════════════ -->
-<script>
-(function () {
-  'use strict';
-
-  /* ── Preloader ── */
-  window.addEventListener('load', function () {
-    setTimeout(function () {
-      document.getElementById('preloader').classList.add('hidden');
-      document.getElementById('hero').classList.add('loaded');
-    }, 1600);
-  });
-
-  /* ── Custom Cursor ── */
-  var dot = document.getElementById('cursorDot');
-  var ring = document.getElementById('cursorRing');
-  var mouseX = 0, mouseY = 0;
-  var ringX = 0, ringY = 0;
-
-  if (window.matchMedia('(hover: hover)').matches) {
-    document.addEventListener('mousemove', function (e) {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      dot.style.transform = 'translate(' + (mouseX - 4) + 'px, ' + (mouseY - 4) + 'px)';
-    });
-
-    function animateRing() {
-      ringX += (mouseX - ringX) * 0.12;
-      ringY += (mouseY - ringY) * 0.12;
-      ring.style.transform = 'translate(' + (ringX - 20) + 'px, ' + (ringY - 20) + 'px)';
-      requestAnimationFrame(animateRing);
-    }
-    animateRing();
-
-    /* Hover expansion on interactive elements */
-    var interactiveEls = document.querySelectorAll(
-      'a, button, .collection-item, .lookbook-item'
-    );
-    interactiveEls.forEach(function (el) {
-      el.addEventListener('mouseenter', function () {
-        ring.classList.add('hover');
-      });
-      el.addEventListener('mouseleave', function () {
-        ring.classList.remove('hover');
-      });
-    });
-  }
-
-  /* ── Navigation Scroll ── */
-  var nav = document.getElementById('nav');
-  var scrollThreshold = 80;
-  var ticking = false;
-
-  window.addEventListener('scroll', function () {
-    if (!ticking) {
-      requestAnimationFrame(function () {
-        if (window.scrollY > scrollThreshold) {
-          nav.classList.add('scrolled');
-        } else {
-          nav.classList.remove('scrolled');
-        }
-        ticking = false;
-      });
-      ticking = true;
-    }
-  });
-
-  /* ── Mobile Menu ── */
-  var menuBtn = document.getElementById('menuBtn');
-  var mobileMenu = document.getElementById('mobileMenu');
-  var mobileLinks = document.querySelectorAll('.mobile-link');
-
-  menuBtn.addEventListener('click', function () {
-    menuBtn.classList.toggle('active');
-    mobileMenu.classList.toggle('open');
-    document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
-  });
-
-  mobileLinks.forEach(function (link) {
-    link.addEventListener('click', function () {
-      menuBtn.classList.remove('active');
-      mobileMenu.classList.remove('open');
-      document.body.style.overflow = '';
-    });
-  });
-
-  /* ── Intersection Observer: Reveal Animations ── */
-  var revealElements = document.querySelectorAll(
-    '.reveal, .reveal-left, .reveal-right, .reveal-scale'
-  );
-
-  var observerOptions = {
-    root: null,
-    rootMargin: '0px 0px -60px 0px',
-    threshold: 0.15
-  };
-
-  var observer = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, observerOptions);
-
-  revealElements.forEach(function (el) {
-    observer.observe(el);
-  });
-
-  /* ── Parallax Effect (subtle) ── */
-  var parallaxElements = document.querySelectorAll('.parallax-slow');
-
-  function handleParallax() {
-    var scrollTop = window.pageYOffset;
-
-    parallaxElements.forEach(function (el) {
-      var rect = el.getBoundingClientRect();
-      var windowHeight = window.innerHeight;
-
-      if (rect.top < windowHeight && rect.bottom > 0) {
-        var offset = (rect.top - windowHeight / 2) * 0.08;
-        el.style.transform = 'translateY(' + offset + 'px)';
-      }
-    });
-  }
-
-  var parallaxTicking = false;
-  window.addEventListener('scroll', function () {
-    if (!parallaxTicking) {
-      requestAnimationFrame(function () {
-        handleParallax();
-        parallaxTicking = false;
-      });
-      parallaxTicking = true;
-    }
-  });
-
-  /* ── Newsletter form micro-interaction ── */
-  var form = document.querySelector('.newsletter-form');
-  if (form) {
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var btn = form.querySelector('.newsletter-btn');
-      var input = form.querySelector('.newsletter-input');
-      btn.textContent = 'Thank you';
-      btn.style.color = 'var(--accent)';
-      input.value = '';
-      input.disabled = true;
-      setTimeout(function () {
-        btn.textContent = 'Subscribe';
-        btn.style.color = '';
-        input.disabled = false;
-      }, 3000);
-    });
-  }
-
-  /* ── Smooth scroll for anchor links ── */
-  document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
-    anchor.addEventListener('click', function (e) {
-      var target = document.querySelector(this.getAttribute('href'));
-      if (target) {
-        e.preventDefault();
-        var offset = 80;
-        var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
-        window.scrollTo({ top: top, behavior: 'smooth' });
-      }
-    });
-  });
-
-})();
-</script>
 </body>
 </html>
