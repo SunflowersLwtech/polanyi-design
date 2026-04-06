@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Baseline: Pricing Page (No Skill)</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: #09090b;
+    color: #fafafa;
+    min-height: 100vh;
+  }
+  .label-bar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: #27272a; text-align: center;
+    padding: 8px; font-size: 12px; color: #a1a1aa; font-weight: 500;
+    border-bottom: 1px solid #3f3f46;
+  }
+  .label-bar strong { color: #fafafa; }
+  .pricing { max-width: 1120px; margin: 0 auto; padding: 136px 24px 96px; text-align: center; }
+  .pricing h2 { font-size: 36px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 12px; }
+  .pricing > p { color: #a1a1aa; font-size: 16px; margin-bottom: 32px; }
+
+  /* Toggle — standard pill */
+  .toggle {
+    display: inline-flex; background: #27272a; border-radius: 10px;
+    padding: 4px; margin-bottom: 48px; position: relative;
+  }
+  .toggle button {
+    position: relative; z-index: 1; padding: 8px 20px;
+    font-size: 14px; color: #a1a1aa; background: none; border: none;
+    border-radius: 8px; cursor: pointer; font-family: inherit;
+    transition: color 0.2s;
+  }
+  .toggle button.active { color: #fafafa; }
+  .toggle::before {
+    content: ''; position: absolute; top: 4px; left: 4px;
+    width: calc(50% - 4px); height: calc(100% - 8px);
+    background: #3f3f46; border-radius: 8px;
+    transition: transform 0.25s cubic-bezier(0.16,1,0.3,1);
+  }
+  .toggle.annual::before { transform: translateX(100%); }
+  .badge { font-size: 11px; background: rgba(99,102,241,0.15); color: #818cf8;
+    padding: 2px 6px; border-radius: 4px; margin-left: 6px; }
+
+  /* Cards — standard 3-column with Pro wider */
+  .cards {
+    display: grid; grid-template-columns: 1fr 1.12fr 1fr;
+    gap: 24px; align-items: start; text-align: left;
+  }
+  .card {
+    background: #18181b; border: 1px solid #27272a;
+    border-radius: 16px; padding: 32px;
+  }
+  .card.featured { border-color: #6366f1; }
+  .card-name { font-size: 14px; font-weight: 500; color: #a1a1aa; margin-bottom: 16px; }
+  .card-price { display: flex; align-items: baseline; gap: 4px; margin-bottom: 8px; }
+  .card-price .amount { font-size: 48px; font-weight: 600; }
+  .card-price .period { font-size: 14px; color: #71717a; }
+  .card-sub { font-size: 13px; color: #71717a; margin-bottom: 20px; }
+  .card-pitch { font-size: 14px; color: #d4d4d8; margin-bottom: 24px; line-height: 1.5; }
+  .card-cta {
+    display: block; width: 100%; padding: 12px; text-align: center;
+    border-radius: 8px; font-size: 14px; font-weight: 600;
+    cursor: pointer; border: none; font-family: inherit;
+    transition: background 0.15s;
+  }
+  .card-cta.primary { background: #6366f1; color: white; }
+  .card-cta.primary:hover { background: #818cf8; }
+  .card-cta.secondary { background: #27272a; color: #fafafa; }
+  .card-cta.secondary:hover { background: #3f3f46; }
+  .card-cta.outline { background: none; border: 1px solid #3f3f46; color: #a1a1aa; }
+  .card-cta.outline:hover { border-color: #71717a; color: #fafafa; }
+  .features { margin-top: 24px; list-style: none; }
+  .features li {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 14px; color: #d4d4d8; padding: 6px 0;
+  }
+  .features .check { color: #6366f1; flex-shrink: 0; margin-top: 2px; }
+  .features .dash { color: #3f3f46; flex-shrink: 0; margin-top: 2px; }
+  .footer-note {
+    margin-top: 48px; font-size: 13px; color: #71717a;
+  }
+  .footer-note a { color: #818cf8; text-decoration: none; }
+
+  @media (max-width: 960px) {
+    .cards { grid-template-columns: 1fr 1fr; }
+    .card.featured { grid-column: 1 / -1; max-width: 480px; margin: 0 auto; }
+  }
+  @media (max-width: 640px) {
+    .cards { grid-template-columns: 1fr; }
+    .card.featured { max-width: none; order: -1; }
+    .pricing h2 { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+<div class="label-bar"><strong>Baseline</strong> — Generated without polanyi-design skill</div>
+
+<section class="pricing">
+  <h2>Simple, transparent pricing</h2>
+  <p>Start free. Scale when you're ready.</p>
+
+  <div class="toggle" id="toggle">
+    <button class="active" data-p="monthly">Monthly</button>
+    <button data-p="annual">Annual <span class="badge">-20%</span></button>
+  </div>
+
+  <div class="cards">
+    <article class="card">
+      <div class="card-name">Hobby</div>
+      <div class="card-price">
+        <span class="amount" data-m="0" data-a="0">$0</span>
+        <span class="period">/ mo</span>
+      </div>
+      <p class="card-sub">Free forever</p>
+      <p class="card-pitch">For personal projects and experiments.</p>
+      <button class="card-cta outline">Get started — free</button>
+      <ul class="features">
+        <li><span class="check">&#10003;</span> 1 project</li>
+        <li><span class="check">&#10003;</span> 1 GB bandwidth</li>
+        <li><span class="check">&#10003;</span> Community support</li>
+        <li><span class="check">&#10003;</span> SSL included</li>
+      </ul>
+    </article>
+
+    <article class="card featured">
+      <div class="card-name">Pro <span class="badge" style="margin-left:8px">Most popular</span></div>
+      <div class="card-price">
+        <span class="amount" data-m="$20" data-a="$16">$20</span>
+        <span class="period">/ mo</span>
+      </div>
+      <p class="card-sub">per seat, billed monthly</p>
+      <p class="card-pitch">For teams shipping to production daily.</p>
+      <button class="card-cta primary">Start 14-day trial</button>
+      <ul class="features">
+        <li><span class="check">&#10003;</span> Unlimited projects</li>
+        <li><span class="check">&#10003;</span> 100 GB bandwidth</li>
+        <li><span class="check">&#10003;</span> Preview deployments</li>
+        <li><span class="check">&#10003;</span> Team collaboration</li>
+        <li><span class="check">&#10003;</span> Priority support</li>
+        <li><span class="check">&#10003;</span> Analytics &amp; logs</li>
+      </ul>
+    </article>
+
+    <article class="card">
+      <div class="card-name">Enterprise</div>
+      <div class="card-price">
+        <span class="amount">Custom</span>
+      </div>
+      <p class="card-sub">Tailored to your org</p>
+      <p class="card-pitch">For organizations with advanced security and compliance needs.</p>
+      <button class="card-cta secondary">Talk to sales</button>
+      <ul class="features">
+        <li><span class="check">&#10003;</span> Everything in Pro</li>
+        <li><span class="check">&#10003;</span> SSO / SAML</li>
+        <li><span class="check">&#10003;</span> 99.99% SLA</li>
+        <li><span class="check">&#10003;</span> Dedicated support</li>
+        <li><span class="check">&#10003;</span> Custom contracts</li>
+      </ul>
+    </article>
+  </div>
+
+  <p class="footer-note">All plans include SSL, CI/CD, and global CDN. <a href="#">Full feature comparison &rarr;</a></p>
+</section>
+
+<script>
+const toggle = document.getElementById('toggle');
+const btns = toggle.querySelectorAll('button');
+btns.forEach(b => b.addEventListener('click', () => {
+  btns.forEach(x => x.classList.remove('active'));
+  b.classList.add('active');
+  toggle.classList.toggle('annual', b.dataset.p === 'annual');
+  document.querySelectorAll('.amount[data-m]').forEach(el => {
+    el.textContent = b.dataset.p === 'annual' ? el.dataset.a : el.dataset.m;
+  });
+  document.querySelectorAll('.card-sub').forEach(el => {
+    if (el.textContent.includes('seat')) {
+      el.textContent = b.dataset.p === 'annual' ? 'per seat, billed annually' : 'per seat, billed monthly';
+    }
+  });
+}));
+</script>
+</body>
+</html>

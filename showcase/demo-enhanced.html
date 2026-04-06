@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enhanced: Pricing Page (With polanyi-design)</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: #fafaf9;
+    color: #111827;
+    min-height: 100vh;
+  }
+
+  /* Label bar */
+  .label-bar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: #6366f1; text-align: center;
+    padding: 8px; font-size: 12px; color: rgba(255,255,255,0.8); font-weight: 500;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .label-bar strong { color: white; }
+
+  .pricing { max-width: 1120px; margin: 0 auto; padding: 136px 24px 96px; text-align: center; }
+  .pricing h2 {
+    font-size: 40px; font-weight: 700; letter-spacing: -0.03em;
+    line-height: 1.1; margin-bottom: 12px; color: #111827;
+  }
+  .pricing > p { color: #6b7280; font-size: 17px; margin-bottom: 36px; }
+
+  /* Toggle — pill with savings badge animation */
+  .toggle {
+    display: inline-flex; background: #f3f4f6; border-radius: 999px;
+    padding: 4px; margin-bottom: 56px; position: relative;
+  }
+  .toggle button {
+    position: relative; z-index: 1; padding: 10px 24px;
+    font-size: 14px; font-weight: 500; color: #6b7280; background: none; border: none;
+    border-radius: 999px; cursor: pointer; font-family: inherit;
+    transition: color 0.2s ease-out;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .toggle button.active { color: #111827; }
+  .toggle::before {
+    content: ''; position: absolute; top: 4px; left: 4px;
+    width: calc(50% - 4px); height: calc(100% - 8px);
+    background: white; border-radius: 999px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+    transition: transform 0.3s cubic-bezier(0,0,0.2,1);
+  }
+  .toggle.annual::before { transform: translateX(100%); }
+  .savings-badge {
+    font-size: 11px; font-weight: 600; background: #d1fae5; color: #047857;
+    padding: 2px 8px; border-radius: 999px;
+    transition: opacity 0.3s, transform 0.3s;
+    opacity: 0; transform: translateY(2px);
+  }
+  .toggle.annual .savings-badge { opacity: 1; transform: translateY(0); }
+
+  /* Cards — Pro as protagonist */
+  .cards {
+    display: grid; grid-template-columns: 1fr 1.08fr 1fr;
+    gap: 20px; align-items: start; text-align: left;
+  }
+  .card {
+    background: white; border: 1px solid #e5e7eb;
+    border-radius: 16px; padding: 32px;
+    transition: box-shadow 0.3s ease-out;
+    display: flex; flex-direction: column;
+  }
+  .card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+
+  /* Pro card — dark, scaled, elevated */
+  .card.featured {
+    background: #111827; color: #fafafa; border: none;
+    box-shadow: 0 24px 48px -12px rgba(0,0,0,0.25);
+    padding: 40px 36px; position: relative;
+    transform: scale(1.02);
+  }
+  .card.featured:hover { box-shadow: 0 24px 48px -12px rgba(0,0,0,0.35); }
+
+  /* Badge breaks card boundary — intentional focal tension */
+  .pop-badge {
+    position: absolute; top: -14px; left: 32px;
+    background: #6366f1; color: white;
+    font-size: 12px; font-weight: 600; letter-spacing: 0.02em;
+    padding: 5px 14px; border-radius: 999px;
+  }
+
+  .card-name { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+  .card .card-name { color: #6b7280; }
+  .card.featured .card-name { color: #a5b4fc; }
+  .card-desc { font-size: 14px; color: #9ca3af; margin-bottom: 20px; line-height: 1.5; }
+
+  /* Fixed height price block — prevents CLS on toggle */
+  .price-block { height: 72px; display: flex; align-items: baseline; gap: 4px; }
+  .price-block .dollar { font-size: 16px; font-weight: 500; color: #9ca3af; align-self: flex-start; margin-top: 8px; }
+  .price-block .amount {
+    font-size: 52px; font-weight: 700; letter-spacing: -0.03em;
+    transition: opacity 0.15s, transform 0.15s;
+  }
+  .price-block .period { font-size: 15px; color: #9ca3af; }
+  .card.featured .price-block .dollar { color: #6b7280; }
+  .card.featured .price-block .amount { color: #fafafa; }
+  .card.featured .price-block .period { color: #6b7280; }
+  .card-sub { font-size: 13px; color: #9ca3af; margin-bottom: 24px; }
+
+  /* CTAs — three distinct visual weights */
+  .card-cta {
+    display: block; width: 100%; padding: 12px 16px; text-align: center;
+    border-radius: 10px; font-size: 14px; font-weight: 600;
+    cursor: pointer; border: none; font-family: inherit;
+    transition: background 0.15s ease-out, box-shadow 0.15s ease-out, transform 0.1s ease-out;
+  }
+  .card-cta:focus-visible {
+    outline: 2px solid #6366f1; outline-offset: 2px;
+  }
+  .card-cta:active { transform: translateY(1px); }
+
+  .card-cta.primary { background: #6366f1; color: white; }
+  .card-cta.primary:hover { background: #818cf8; box-shadow: 0 4px 12px rgba(99,102,241,0.3); }
+  .card-cta.dark { background: #1f2937; color: white; }
+  .card-cta.dark:hover { background: #374151; }
+  .card-cta.ghost { background: none; border: 1px solid #d1d5db; color: #374151; }
+  .card-cta.ghost:hover { border-color: #9ca3af; background: #f9fafb; }
+
+  /* Features with grouped structure */
+  .features { margin-top: 24px; list-style: none; flex: 1; }
+  .feature-group { font-size: 12px; font-weight: 600; color: #9ca3af; text-transform: uppercase;
+    letter-spacing: 0.05em; margin: 16px 0 8px; }
+  .feature-group:first-child { margin-top: 0; }
+  .features li {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 14px; padding: 5px 0; line-height: 1.4;
+  }
+  .card .features li { color: #374151; }
+  .card.featured .features li { color: #d1d5db; }
+  .card.featured .feature-group { color: #6b7280; }
+  .features .icon { flex-shrink: 0; width: 16px; height: 16px; margin-top: 2px; }
+  .features .icon.check { color: #10b981; }
+  .card.featured .features .icon.check { color: #a5b4fc; }
+  .features .icon.dash { color: #d1d5db; }
+
+  .footer-note { margin-top: 56px; font-size: 13px; color: #9ca3af; }
+  .footer-note a { color: #6366f1; text-decoration: none; }
+  .footer-note a:hover { text-decoration: underline; }
+
+  /* Annotations — visible design reasoning */
+  .annotation {
+    position: absolute; font-size: 11px; font-weight: 500;
+    color: #6366f1; background: rgba(99,102,241,0.08);
+    padding: 3px 8px; border-radius: 4px; white-space: nowrap;
+    pointer-events: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+  @media (max-width: 960px) {
+    .cards { grid-template-columns: 1fr 1fr; }
+    .card.featured { grid-column: 1 / -1; max-width: 480px; margin: 0 auto; transform: none; }
+    .pop-badge { left: 24px; }
+  }
+  @media (max-width: 640px) {
+    .cards { grid-template-columns: 1fr; gap: 16px; }
+    .card.featured { max-width: none; order: -1; }
+    .pricing h2 { font-size: 28px; }
+    .price-block .amount { font-size: 40px; }
+    .price-block { height: 60px; }
+  }
+</style>
+</head>
+<body>
+<div class="label-bar"><strong>Enhanced</strong> — Generated with polanyi-design skill</div>
+
+<section class="pricing">
+  <h2>Simple, transparent pricing</h2>
+  <p>Start free. Scale when you're ready.</p>
+
+  <div class="toggle" id="toggle">
+    <button class="active" data-p="monthly">Monthly</button>
+    <button data-p="annual">Annual <span class="savings-badge">Save 17%</span></button>
+  </div>
+
+  <div class="cards">
+    <!-- Hobby — ghost CTA, lowest visual weight -->
+    <article class="card" role="region" aria-label="Hobby plan">
+      <div class="card-name">Hobby</div>
+      <p class="card-desc">For personal projects and experiments.</p>
+      <div class="price-block">
+        <span class="dollar">$</span>
+        <span class="amount" data-m="0" data-a="0">0</span>
+        <span class="period">/ mo</span>
+      </div>
+      <p class="card-sub">Free forever</p>
+      <button class="card-cta ghost">Get started</button>
+      <ul class="features" role="list">
+        <li class="feature-group">Includes</li>
+        <li><svg class="icon check" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg> 1 project</li>
+        <li><svg class="icon check" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg> 1 GB bandwidth</li>
+        <li><svg class="icon check" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg> Community support</li>
+        <li><svg class="icon check" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg> SSL included</li>
+      </ul>
+    </article>
+
+    <!-- Pro — protagonist, dark, elevated, badge breaks boundary -->
+    <article class="card featured" role="region" aria-label="Pro plan, most popular">
+      <div class="pop-badge">Most popular</div>
+      <div class="card-name">Pro</div>
+      <p class="card-desc" style="color:#9ca3af">For teams shipping to production daily.</p>
+      <div class="price-block">
+        <span class="dollar">$</span>
+        <span class="amount" data-m="20" data-a="16">20</span>
+        <span class="period">/ mo</span>
+      </div>
+      <p class="card-sub">per seat, billed monthly</p>
+      <button class="card-cta primary">Start 14-day trial</button>
+      <ul class="features" role="list">
+        <li class="feature-group">Everything in Hobby, plus</li>
+        <li><svg class="icon check" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg> Unlimited projects</li>
+        <li><svg class="icon check" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg> 100 GB bandwidth</li>
+        <li><svg class="icon check" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg> Preview deployments</li>
+        <li><svg class="icon check" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg> Team collaboration</li>
+        <li><svg class="icon check" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg> Priority support</li>
+        <li><svg class="icon check" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg> Analytics &amp; logs</li>
+      </ul>
+    </article>
+
+    <!-- Enterprise — secondary CTA weight -->
+    <article class="card" role="region" aria-label="Enterprise plan">
+      <div class="card-name">Enterprise</div>
+      <p class="card-desc">For organizations with advanced security and compliance.</p>
+      <div class="price-block">
+        <span class="amount" style="font-size:36px">Custom</span>
+      </div>
+      <p class="card-sub">Tailored to your organization</p>
+      <button class="card-cta dark">Talk to sales</button>
+      <ul class="features" role="list">
+        <li class="feature-group">Everything in Pro, plus</li>
+        <li><svg class="icon check" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg> SSO / SAML</li>
+        <li><svg class="icon check" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg> 99.99% SLA</li>
+        <li><svg class="icon check" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg> Dedicated support</li>
+        <li><svg class="icon check" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg> Custom contracts</li>
+      </ul>
+    </article>
+  </div>
+
+  <p class="footer-note">All plans include SSL, CI/CD, and global CDN. <a href="#">Full feature comparison &rarr;</a></p>
+</section>
+
+<script>
+const toggle = document.getElementById('toggle');
+const btns = toggle.querySelectorAll('button');
+btns.forEach(b => b.addEventListener('click', () => {
+  btns.forEach(x => x.classList.remove('active'));
+  b.classList.add('active');
+  const isAnnual = b.dataset.p === 'annual';
+  toggle.classList.toggle('annual', isAnnual);
+  document.querySelectorAll('.amount[data-m]').forEach(el => {
+    const target = isAnnual ? el.dataset.a : el.dataset.m;
+    el.style.opacity = '0'; el.style.transform = 'translateY(-4px)';
+    setTimeout(() => {
+      el.textContent = target;
+      el.style.transform = 'translateY(4px)';
+      requestAnimationFrame(() => { el.style.opacity = '1'; el.style.transform = 'translateY(0)'; });
+    }, 150);
+  });
+  document.querySelectorAll('.card-sub').forEach(el => {
+    if (el.textContent.includes('seat'))
+      el.textContent = isAnnual ? 'per seat, billed annually' : 'per seat, billed monthly';
+  });
+}));
+</script>
+</body>
+</html>

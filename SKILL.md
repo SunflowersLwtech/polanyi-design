@@ -71,6 +71,40 @@ three diagnostic properties:
   the post-critical level — explain the tacit reason behind the rule and whether this
   context warrants breaking it.
 
+### Aesthetic Judgment Encoding (from frontend-design research)
+
+Six patterns for encoding design taste that rules cannot capture:
+
+1. **Negation > Assertion.** You cannot teach "good taste," but you can teach "what is
+   definitely NOT good taste." When generating design, explicitly ban the defaults:
+   - NEVER: Inter/Roboto/Arial as the only font without deliberate reason
+   - NEVER: unmodified Tailwind shadow-md + rounded-lg on every surface
+   - NEVER: purple gradient on white background
+   - NEVER: identical spacing between all sections
+   - NEVER: stock photos without treatment (filter, duotone, crop)
+
+2. **Polarization > Compromise.** Force choice to an extreme direction rather than
+   settling on a safe middle. "Brutally minimal" or "maximalist editorial" — not
+   "moderate and clean." The middle ground is where templates live. Commitment to a
+   direction, even an unusual one, creates coherence.
+
+3. **Intentionality > Intensity.** Ask "what makes this UNFORGETTABLE?" not "what makes
+   this follow best practices." Memorable design comes from one focused intent, not
+   feature completeness. One signature visual decision beats five safe ones.
+
+4. **Anti-Convergence.** AI naturally reproduces successful patterns. Actively prevent
+   regression to defaults. Each generation of output should make different specific
+   choices — not the same "safe" font/color/layout combinations every time.
+
+5. **Taxonomy > Rules.** Instead of "use a good font," offer a vocabulary of aesthetic
+   directions (editorial, brutalist, organic, geometric, retro-futuristic) and let the
+   context determine which fits. Constraint systems beat rule lists.
+
+6. **Multi-Layer Refinement.** High level: choose an aesthetic direction (commitment).
+   Mid level: apply to 5 domains (type, color, motion, space, surface). Low level:
+   specific tactical choices (display font + body font). Negation layer: what to never
+   do. All four layers must be coherent.
+
 ---
 
 ## System 2: Five Design Lenses
@@ -246,6 +280,106 @@ woven into every design response, not siloed into a checklist.
   back), not just what went wrong.
 - Slow network: consider how the design degrades. KPI cards without data should show
   placeholder dashes (—), not spinners.
+
+### Motion & Animation System
+
+Motion is not decoration — it communicates state change, guides attention, and creates
+spatial continuity. Every animation needs a functional purpose.
+
+**Duration scale:**
+| Category | Duration | Use Case |
+|----------|----------|----------|
+| Micro | 100–150ms | Button press feedback, toggle state, checkbox |
+| Standard | 200–300ms | Dropdown open, tooltip appear, tab switch, modal enter |
+| Emphasis | 400–500ms | Page transitions, hero animations, panel slide |
+| Data | 600–800ms | Chart drawing, number count-up, progress bar fill |
+
+**Easing vocabulary:**
+- `ease-out` (decelerate) — entrances, things arriving: `cubic-bezier(0, 0, 0.2, 1)`
+- `ease-in` (accelerate) — exits, things leaving: `cubic-bezier(0.4, 0, 1, 1)`
+- `ease-in-out` — element moving between positions: `cubic-bezier(0.4, 0, 0.2, 1)`
+- `spring` — interactive feedback (drag, bounce): `cubic-bezier(0.34, 1.56, 0.64, 1)`
+- Never use `linear` for UI motion — it feels mechanical and lifeless.
+
+**Choreography principles:**
+- Stagger sibling elements by 30–50ms delay (cards appearing, list items loading)
+- Lead with the focal element, then animate supporting elements
+- Exit animations should be faster than entrances (150ms exit vs 250ms enter)
+- Group related elements — a card's shadow and transform should animate together
+
+**`prefers-reduced-motion` handling:**
+```css
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+```
+Replace motion with instant opacity crossfade at 150ms for users who need it.
+Never remove state feedback entirely — just change the delivery from spatial to opacity.
+
+### Data Visualization Color System
+
+Charts and graphs need a separate color system from UI chrome. UI colors encode
+interaction; data colors encode meaning.
+
+**Categorical palette (max 6 distinguishable hues):**
+```
+Series 1: #3B82F6 (blue-500)    — primary metric
+Series 2: #8B5CF6 (violet-500)  — secondary metric
+Series 3: #10B981 (emerald-500) — tertiary
+Series 4: #F59E0B (amber-500)   — quaternary
+Series 5: #EF4444 (rose-500)    — quinary
+Series 6: #06B6D4 (cyan-500)    — senary
+```
+Do not exceed 6 categorical colors. If you need more, group data or use a different
+chart type. Seven similar-value colors become noise.
+
+**Sequential palette (intensity scales):**
+Single-hue ramp from light to dark. For blue: `#DBEAFE → #93C5FD → #3B82F6 → #1D4ED8 → #1E3A5F`
+Use for heatmaps, choropleth maps, and density plots.
+
+**Divergent palette (positive/negative):**
+```
+Negative: #EF4444 (red-500)
+Neutral:  #E5E7EB (gray-200)
+Positive: #10B981 (emerald-500)
+```
+Center on gray, diverge to saturated ends. Use for profit/loss, above/below average.
+
+**Colorblind safety:**
+- Never encode meaning with red/green alone — always pair color with shape, pattern,
+  or label as redundant encoding
+- Test: apply deuteranopia simulation (`filter: url(#deuteranopia)` or browser devtools)
+- Safe alternatives: blue/orange is distinguishable by >99% of people
+- Add data labels directly on chart elements when space allows — this bypasses color
+  dependency entirely
+
+### Quality Verification Checklist
+
+When recommending a design, include verification steps the team can run:
+
+**Accessibility verification:**
+- `npx axe-core` on every view — zero violations is the target
+- Test at 200% browser zoom — layout must not break or require horizontal scroll
+- Keyboard-only navigation: Tab through the full page, verify focus order matches
+  visual order, all interactive elements reachable, no focus traps
+- VoiceOver (macOS) or NVDA (Windows): navigate each section. Verify headings create
+  a logical outline. Verify all images have alt text. Verify form labels are announced.
+- Color contrast: use Chrome DevTools Rendering → "Emulate vision deficiencies"
+
+**Visual regression:**
+- Snapshot test at 375px, 768px, 1440px — compare against baseline
+- Test with real content (not "Lorem ipsum") — long names, empty states, error messages
+- Test with slow network (Chrome DevTools → Slow 3G) — verify skeleton states appear
+
+**Component audit:**
+- Every interactive element has a visible focus state
+- Every async operation has loading, success, and error states
+- Every list has an empty state
+- No text below 12px at any breakpoint
+- Touch targets ≥ 44px on mobile views
 
 ---
 
