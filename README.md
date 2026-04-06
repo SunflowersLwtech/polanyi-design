@@ -47,6 +47,75 @@ corners and commit."
 Same problem, different depth. The skill doesn't give *different* advice — it gives
 advice that transfers *understanding*.
 
+## Side-by-Side: With vs Without Skill
+
+> Prompt: "Design a SaaS pricing page (3 tiers: Hobby/Pro/Enterprise). Make Pro the obvious choice. Premium, not template-y."
+
+### Without Skill (Baseline)
+
+```
+Visual Strategy: "Asymmetric emphasis — Pro card physically dominates."
+
+Layout: Pro card 380px wide (vs 340px others). Cards at 32px padding,
+16px radius, 24px gap. Dark background.
+
+Toggle: Segmented control with sliding indicator. Price does vertical
+slide-fade (150ms). [Full CSS + JS provided]
+
+Anti-Template: Pro wider not taller. Gradient on 1px border only.
+CTA above features. Dark mode by default.
+```
+
+Verdict: Correct, implementable, but **never explains WHY** any decision was made.
+No accessibility. No CLS prevention. No escape hatch.
+
+### With Skill (polanyi-design)
+
+```
+Design Thesis: "Pro is the protagonist. Hobby and Enterprise exist to
+make Pro's value obvious through contrast."
+
+Layout: Pro at lg:scale-[1.02] with shadow-[0_24px_48px_-12px].
+Price block has FIXED h-[72px] — prevents layout shift on toggle.
+
+Toggle: Savings badge uses emerald, not brand indigo — "emerald encodes
+'money saved', a different semantic than brand identity. Using brand
+blue here would flatten the information hierarchy."
+
+"Most Popular" badge: absolute -top-3.5 — "breaks the card boundary
+intentionally. A badge inside padding is subsidiary; a badge that
+breaches the boundary is focal."
+
+Accessibility: focus-visible:outline-2 on all buttons. aria-hidden on
+decorative icons. role="list" on features.
+
+What NOT to do:
+- "Don't hover-lift pricing cards — they imply the whole card is
+   clickable, but only the CTA is"
+- "Don't list 15+ features — group into 2-3 categories"
+
+Escape hatch: "If your product has equal adoption across tiers,
+flatten the hierarchy. This strategy assumes Pro is the business model."
+```
+
+Verdict: Same technical quality, **plus** explains the tacit reasoning behind
+every choice. Includes accessibility, CLS prevention, anti-patterns, and
+knows when its own advice shouldn't apply.
+
+### What the Skill Adds (Blind A/B, Evaluated by Independent Agent)
+
+| Dimension | Without | With | What Changed |
+|-----------|---------|------|-------------|
+| Technical | 7.4 | 8.6 | Production-aware choices (h-[72px] for CLS, focus-visible) |
+| Design | 6.6 | 7.8 | Badge breaking card boundary, emerald semantic differentiation |
+| Reasoning | 5.6 | 8.0 | Explains WHY — "protagonist/supporting cast" thesis |
+| Actionable | 8.0 | 8.8 | Same specs + rationale that prevents wrong implementation |
+| **Tacit** | **4.6** | **8.8** | **+4.2** — Surfaces judgment tutorials never teach |
+
+> [View the full showcase page](showcase/index.html) for rendered comparison.
+
+---
+
 ## How It Works
 
 Three systems fire in sequence:

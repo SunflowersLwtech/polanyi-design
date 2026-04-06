@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>polanyi-design — Skill Showcase</title>
+<style>
+  :root {
+    --gray-0: #ffffff;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-400: #9ca3af;
+    --gray-500: #6b7280;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --gray-800: #1f2937;
+    --gray-900: #111827;
+    --gray-950: #030712;
+    --blue-500: #3b82f6;
+    --blue-600: #2563eb;
+    --indigo-500: #6366f1;
+    --emerald-500: #10b981;
+    --emerald-100: #d1fae5;
+    --emerald-700: #047857;
+    --red-400: #f87171;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    color: var(--gray-900);
+    line-height: 1.6;
+    background: var(--gray-0);
+  }
+
+  /* Hero */
+  .hero {
+    text-align: center;
+    padding: 96px 24px 64px;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .hero-badge {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--indigo-500);
+    background: rgba(99,102,241,0.08);
+    padding: 4px 12px;
+    border-radius: 999px;
+    margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-size: 48px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+  .hero h1 em { font-style: normal; color: var(--indigo-500); }
+  .hero p {
+    font-size: 18px;
+    color: var(--gray-500);
+    max-width: 540px;
+    margin: 0 auto;
+  }
+
+  /* Scores */
+  .scores {
+    max-width: 960px;
+    margin: 0 auto 80px;
+    padding: 0 24px;
+  }
+  .scores h2 {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--gray-400);
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .score-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+  }
+  .score-card {
+    text-align: center;
+    padding: 24px 16px;
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+  }
+  .score-label { font-size: 12px; color: var(--gray-500); font-weight: 500; }
+  .score-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--emerald-700);
+    margin: 8px 0 4px;
+    letter-spacing: -0.02em;
+  }
+  .score-dim { font-size: 13px; color: var(--gray-600); }
+
+  /* Comparison Section */
+  .comparison {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px 96px;
+  }
+  .comparison h2 {
+    font-size: 32px;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+  .comparison > p {
+    text-align: center;
+    color: var(--gray-500);
+    margin-bottom: 48px;
+    font-size: 16px;
+  }
+  .comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .comp-col { display: flex; flex-direction: column; gap: 0; }
+  .comp-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 20px;
+    border-radius: 12px 12px 0 0;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .comp-header.baseline { background: var(--gray-100); color: var(--gray-600); }
+  .comp-header.enhanced { background: var(--indigo-500); color: white; }
+  .comp-header .tag {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-weight: 500;
+  }
+  .comp-header.baseline .tag { background: var(--gray-200); color: var(--gray-600); }
+  .comp-header.enhanced .tag { background: rgba(255,255,255,0.2); color: white; }
+  .comp-body {
+    padding: 24px;
+    border: 1px solid var(--gray-200);
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--gray-700);
+    flex: 1;
+    overflow: hidden;
+  }
+  .comp-body h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--gray-900);
+    margin: 20px 0 8px;
+  }
+  .comp-body h3:first-child { margin-top: 0; }
+  .comp-body ul { padding-left: 20px; }
+  .comp-body li { margin-bottom: 6px; }
+  .comp-body code {
+    font-size: 13px;
+    background: var(--gray-100);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  }
+  .insight {
+    margin: 16px 0;
+    padding: 12px 16px;
+    border-left: 3px solid var(--indigo-500);
+    background: rgba(99,102,241,0.04);
+    border-radius: 0 8px 8px 0;
+    font-size: 13px;
+    color: var(--gray-700);
+  }
+  .insight strong { color: var(--indigo-500); }
+  .missing {
+    margin: 16px 0;
+    padding: 12px 16px;
+    border-left: 3px solid var(--red-400);
+    background: rgba(248,113,113,0.04);
+    border-radius: 0 8px 8px 0;
+    font-size: 13px;
+    color: var(--gray-600);
+  }
+
+  /* Trajectory */
+  .trajectory {
+    max-width: 720px;
+    margin: 0 auto 96px;
+    padding: 0 24px;
+    text-align: center;
+  }
+  .trajectory h2 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 40px;
+  }
+  .traj-bars { display: flex; flex-direction: column; gap: 12px; text-align: left; }
+  .traj-row { display: flex; align-items: center; gap: 12px; }
+  .traj-label { width: 60px; font-size: 13px; font-weight: 600; color: var(--gray-500); }
+  .traj-bar-bg {
+    flex: 1; height: 32px; background: var(--gray-100);
+    border-radius: 8px; overflow: hidden; position: relative;
+  }
+  .traj-bar-fill {
+    height: 100%; border-radius: 8px;
+    display: flex; align-items: center; padding-left: 12px;
+    font-size: 13px; font-weight: 600; color: white;
+    transition: width 1s ease;
+  }
+  .traj-bar-fill.r1 { width: 57.5%; background: var(--gray-400); }
+  .traj-bar-fill.r2 { width: 77.5%; background: var(--blue-600); }
+  .traj-bar-fill.r3 { width: 75%; background: var(--indigo-500); }
+  .traj-note { font-size: 12px; color: var(--gray-400); width: 120px; text-align: right; }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 48px 24px;
+    border-top: 1px solid var(--gray-200);
+    color: var(--gray-400);
+    font-size: 13px;
+  }
+  .footer a { color: var(--indigo-500); text-decoration: none; }
+
+  @media (max-width: 768px) {
+    .hero h1 { font-size: 32px; }
+    .score-grid { grid-template-columns: repeat(3, 1fr); }
+    .comparison-grid { grid-template-columns: 1fr; }
+    .traj-note { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-badge">Claude Code Skill</div>
+  <h1>What if AI could design like a <em>senior designer</em>?</h1>
+  <p>polanyi-design surfaces the tacit judgment that separates a design director's feedback from a bootcamp grad's. Validated with blind A/B testing.</p>
+</section>
+
+<!-- Scores -->
+<section class="scores">
+  <h2>Measured improvement over baseline (blind A/B, 5 scenarios)</h2>
+  <div class="score-grid">
+    <div class="score-card">
+      <div class="score-label">Technical</div>
+      <div class="score-value">+1.6</div>
+      <div class="score-dim">Correctness</div>
+    </div>
+    <div class="score-card">
+      <div class="score-label">Design</div>
+      <div class="score-value">+1.6</div>
+      <div class="score-dim">Quality</div>
+    </div>
+    <div class="score-card">
+      <div class="score-label">Reasoning</div>
+      <div class="score-value">+2.0</div>
+      <div class="score-dim">Depth</div>
+    </div>
+    <div class="score-card">
+      <div class="score-label">Action</div>
+      <div class="score-value">+1.6</div>
+      <div class="score-dim">Actionability</div>
+    </div>
+    <div class="score-card">
+      <div class="score-label">Tacit</div>
+      <div class="score-value">+2.8</div>
+      <div class="score-dim">Articulation</div>
+    </div>
+  </div>
+</section>
+
+<!-- Comparison -->
+<section class="comparison">
+  <h2>Same prompt. Different depth.</h2>
+  <p>"Design a SaaS pricing page for a developer tools product (3 tiers). Make it premium, not template-y."</p>
+
+  <div class="comparison-grid">
+    <!-- Baseline -->
+    <div class="comp-col">
+      <div class="comp-header baseline">
+        Without Skill <span class="tag">Baseline</span>
+      </div>
+      <div class="comp-body">
+        <h3>Visual Strategy</h3>
+        <p>"Asymmetric emphasis — Pro card physically dominates via spatial hierarchy." Cards on dark background, Pro gets gradient border.</p>
+
+        <h3>Layout</h3>
+        <p>Pro card is <strong>wider</strong> (380px vs 340px). Cards at 32px padding, 16px radius, 24px gap.</p>
+
+        <h3>Toggle</h3>
+        <p>Segmented control with sliding background. Price does vertical slide-fade (150ms). Provides full CSS + JS implementation.</p>
+
+        <h3>Anti-Template Moves</h3>
+        <ul>
+          <li>Pro wider not taller</li>
+          <li>Gradient only on 1px border</li>
+          <li>CTA above features</li>
+          <li>Dark mode by default</li>
+        </ul>
+
+        <div class="missing">
+          <strong>What's missing:</strong> No explanation of WHY CTA goes above features. No accessibility (focus states, keyboard nav). No CLS prevention. No loading states. No escape hatch for equal-tier products.
+        </div>
+      </div>
+    </div>
+
+    <!-- Enhanced -->
+    <div class="comp-col">
+      <div class="comp-header enhanced">
+        With Skill <span class="tag">polanyi-design</span>
+      </div>
+      <div class="comp-body">
+        <h3>Design Thesis</h3>
+        <div class="insight">
+          <strong>Tacit insight:</strong> "Pro is the protagonist. Hobby and Enterprise are supporting cast that exist to make Pro's value obvious through contrast."
+        </div>
+
+        <h3>Layout + Rationale</h3>
+        <p>Pro card at <code>lg:scale-[1.02]</code> with <code>shadow-[0_24px_48px_-12px]</code>. Price block has <strong>fixed <code>h-[72px]</code></strong> to prevent layout shift on toggle.</p>
+
+        <div class="insight">
+          <strong>Tacit insight:</strong> "The 'Most popular' badge uses <code>absolute -top-3.5</code> — it breaks the card boundary intentionally. A badge inside padding is subsidiary; a badge that breaches is focal."
+        </div>
+
+        <h3>Toggle</h3>
+        <p>Savings badge uses <code>emerald</code> not brand indigo.</p>
+        <div class="insight">
+          <strong>Tacit insight:</strong> "Emerald encodes 'money saved' — a different semantic than brand identity. Using brand blue here would flatten the information hierarchy."
+        </div>
+
+        <h3>What NOT to Do</h3>
+        <ul>
+          <li>"Don't hover-lift pricing cards — they imply the card is clickable, but only the CTA is"</li>
+          <li>"Don't list 15+ features — group into 2-3 categories"</li>
+          <li>"Don't make all CTAs same visual weight"</li>
+        </ul>
+
+        <h3>Accessibility</h3>
+        <p><code>focus-visible:outline-2 outline-offset-2</code> on all buttons. <code>aria-hidden</code> on decorative icons. <code>role="list"</code> on features.</p>
+
+        <h3>Escape Hatch</h3>
+        <div class="insight">
+          <strong>Tacit insight:</strong> "If your product genuinely has equal adoption across tiers, flatten the hierarchy. The asymmetric strategy assumes Pro is the business model."
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Trajectory -->
+<section class="trajectory">
+  <h2>Iteration trajectory</h2>
+  <div class="traj-bars">
+    <div class="traj-row">
+      <div class="traj-label">R1 V1</div>
+      <div class="traj-bar-bg"><div class="traj-bar-fill r1">+23.0%</div></div>
+      <div class="traj-note">AC regression found</div>
+    </div>
+    <div class="traj-row">
+      <div class="traj-label">R2 V2</div>
+      <div class="traj-bar-bg"><div class="traj-bar-fill r2">+31.0%</div></div>
+      <div class="traj-note">AC fixed (+3.0 swing)</div>
+    </div>
+    <div class="traj-row">
+      <div class="traj-label">R3 V3</div>
+      <div class="traj-bar-bg"><div class="traj-bar-fill r3">+30.0%</div></div>
+      <div class="traj-note">Production ready</div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <p>
+    <a href="https://github.com/SunflowersLwtech/polanyi-design">GitHub</a> ·
+    Built on Michael Polanyi's tacit knowledge framework (1958-1966) ·
+    MIT License
+  </p>
+  <p style="margin-top: 8px;">
+    Inspired by <a href="https://github.com/enzyme2013/polanyi-skill">enzyme2013/polanyi-skill</a>
+  </p>
+</footer>
+
+</body>
+</html>
