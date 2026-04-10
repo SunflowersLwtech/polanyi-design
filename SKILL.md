@@ -18,8 +18,9 @@ description: |
 
 ## How This Works
 
-Three systems fire in sequence. The Knowledge Filter decides what depth to operate at.
-The Design Lenses analyze the problem. The Output Protocol structures the response.
+Three systems are available. Match depth to the question — a quick color opinion
+doesn't need all five lenses; a full design system review does. Let the problem's
+complexity pull you deeper, not a fixed sequence.
 
 Do not announce the machinery. Apply it. The reader should experience better design
 thinking, not a lecture about epistemology.
@@ -71,39 +72,22 @@ three diagnostic properties:
   the post-critical level — explain the tacit reason behind the rule and whether this
   context warrants breaking it.
 
-### Aesthetic Judgment Encoding (from frontend-design research)
+### Aesthetic Judgment Encoding
 
-Six patterns for encoding design taste that rules cannot capture:
+Six patterns for encoding taste that rules cannot capture:
 
-1. **Negation > Assertion.** You cannot teach "good taste," but you can teach "what is
-   definitely NOT good taste." When generating design, explicitly ban the defaults:
-   - NEVER: Inter/Roboto/Arial as the SOLE typeface — pair with a contrasting display font or don't use at all
-   - NEVER: unmodified Tailwind shadow-md + rounded-lg on every surface
-   - NEVER: purple gradient on white background
-   - NEVER: identical spacing between all sections
-   - NEVER: stock photos without treatment (filter, duotone, crop)
-
-2. **Polarization > Compromise.** Force choice to an extreme direction rather than
-   settling on a safe middle. "Brutally minimal" or "maximalist editorial" — not
-   "moderate and clean." The middle ground is where templates live. Commitment to a
-   direction, even an unusual one, creates coherence.
-
-3. **Intentionality > Intensity.** Ask "what makes this UNFORGETTABLE?" not "what makes
-   this follow best practices." Memorable design comes from one focused intent, not
-   feature completeness. One signature visual decision beats five safe ones.
-
-4. **Anti-Convergence.** AI naturally reproduces successful patterns. Actively prevent
-   regression to defaults. Each generation of output should make different specific
-   choices — not the same "safe" font/color/layout combinations every time.
-
-5. **Taxonomy > Rules.** Instead of "use a good font," offer a vocabulary of aesthetic
-   directions (editorial, brutalist, organic, geometric, retro-futuristic) and let the
-   context determine which fits. Constraint systems beat rule lists.
-
-6. **Multi-Layer Refinement.** High level: choose an aesthetic direction (commitment).
-   Mid level: apply to 5 domains (type, color, motion, space, surface). Low level:
-   specific tactical choices (display font + body font). Negation layer: what to never
-   do. All four layers must be coherent.
+1. **Negation > Assertion.** Ban the defaults (generic fonts as sole typeface, unmodified
+   Tailwind shadow-md + rounded-lg everywhere, purple gradient on white, identical spacing).
+   You cannot teach "good taste," but you can teach "what is definitely NOT good taste."
+2. **Polarization > Compromise.** Commit to an extreme direction. The middle ground is
+   where templates live.
+3. **Intentionality > Intensity.** One signature visual decision beats five safe ones.
+4. **Anti-Convergence.** Each generation must make different specific choices — never
+   the same "safe" combinations.
+5. **Taxonomy > Rules.** Offer aesthetic directions (editorial, brutalist, organic,
+   geometric, retro-futuristic) and let context determine which fits.
+6. **Multi-Layer Coherence.** Direction → 5 domains (type, color, motion, space,
+   surface) → specific choices → negation layer. All layers must speak the same voice.
 
 ---
 
@@ -255,203 +239,89 @@ before deciding whether this context warrants breaking it.
 
 ### Cross-Cutting: Accessibility & Resilience
 
-These are not separate lenses — they are **subsidiary requirements** that should be
-woven into every design response, not siloed into a checklist.
+These are **subsidiary requirements** woven into every design response, not a separate
+checklist.
 
 **Accessibility as subsidiary design:**
-- Focus states: every interactive element needs a visible focus indicator (2px outline,
-  offset 2px, in primary color or high-contrast). This is not optional styling — it is
-  a structural requirement like having a roof.
-- Color contrast: text must meet WCAG AA (4.5:1 for body, 3:1 for large text). When
-  recommending colors, verify the pairing. If you recommend gray-400 (#9CA3AF) on white,
-  note that it fails AA (3.0:1) and suggest gray-600 (#4B5563) instead (5.9:1).
-- Touch targets: 44px minimum on mobile. If your design has 32px tap targets, note the
-  accessibility gap.
-- Motion: include `prefers-reduced-motion` consideration when recommending animations.
-- Screen readers: when recommending visual-only indicators (color dots for status, icon-only
-  buttons), note the need for sr-only labels or aria-label.
+- Focus states: 2px outline, offset 2px, high-contrast — structural like having a roof
+- Color contrast: WCAG AA (4.5:1 body, 3:1 large text) — verify pairings, don't assume
+- Touch targets: 44px minimum mobile. Motion: respect `prefers-reduced-motion`
+- Screen readers: sr-only labels for visual-only indicators (color dots, icon-only buttons)
 
 **Resilience as design quality:**
-- Loading: every data-dependent component needs a skeleton or loading state. Specify its
-  dimensions to prevent layout shift (match the content dimensions).
-- Empty: every list/table/feed needs an empty state. "No results" is a design opportunity,
-  not an error.
-- Error: every async operation needs an error state. Show what the user can do (retry, go
-  back), not just what went wrong.
-- Slow network: consider how the design degrades. KPI cards without data should show
-  placeholder dashes (—), not spinners.
+- Every data-dependent component needs a skeleton matching content dimensions
+- Every list needs an empty state. Every async operation needs an error state
+- Slow network: placeholder dashes (—), not spinners
 
 ### Motion & Animation System
 
-Motion is not decoration — it communicates state change, guides attention, and creates
-spatial continuity. Every animation needs a functional purpose.
+Motion communicates state change, guides attention, and creates spatial continuity.
+Every animation needs a functional purpose.
 
-**Duration scale:**
-| Category | Duration | Use Case |
-|----------|----------|----------|
-| Micro | 100–150ms | Button press feedback, toggle state, checkbox |
-| Standard | 200–300ms | Dropdown open, tooltip appear, tab switch, modal enter |
-| Emphasis | 400–500ms | Page transitions, hero animations, panel slide |
-| Data | 600–800ms | Chart drawing, number count-up, progress bar fill |
+**Duration:** micro (100–150ms) → standard (200–300ms) → emphasis (400–500ms) → data
+(600–800ms). **Easing:** ease-out for entrances, ease-in for exits, spring for
+interactive feedback. Avoid `linear` — it feels mechanical.
 
-**Easing vocabulary:**
-- `ease-out` (decelerate) — entrances, things arriving: `cubic-bezier(0, 0, 0.2, 1)`
-- `ease-in` (accelerate) — exits, things leaving: `cubic-bezier(0.4, 0, 1, 1)`
-- `ease-in-out` — element moving between positions: `cubic-bezier(0.4, 0, 0.2, 1)`
-- `spring` — interactive feedback (drag, bounce): `cubic-bezier(0.34, 1.56, 0.64, 1)`
-- Never use `linear` for UI motion — it feels mechanical and lifeless.
+**Choreography:** Stagger siblings by 30–50ms. Lead with the focal element. Exits
+faster than entrances. Group related elements (shadow + transform animate together).
 
-**Choreography principles:**
-- Stagger sibling elements by 30–50ms delay (cards appearing, list items loading)
-- Lead with the focal element, then animate supporting elements
-- Exit animations should be faster than entrances (150ms exit vs 250ms enter)
-- Group related elements — a card's shadow and transform should animate together
-
-**`prefers-reduced-motion` handling:**
-```css
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-```
-Replace motion with instant opacity crossfade at 150ms for users who need it.
-Never remove state feedback entirely — just change the delivery from spatial to opacity.
+Always respect `prefers-reduced-motion` — replace spatial motion with opacity crossfade,
+never remove state feedback entirely.
 
 ### Data Visualization Color System
 
-Charts and graphs need a separate color system from UI chrome. UI colors encode
-interaction; data colors encode meaning.
+Charts need a separate color system from UI chrome. UI colors encode interaction;
+data colors encode meaning.
 
-**Categorical palette (max 6 distinguishable hues):**
-```
-Series 1: #3B82F6 (blue-500)    — primary metric
-Series 2: #8B5CF6 (violet-500)  — secondary metric
-Series 3: #10B981 (emerald-500) — tertiary
-Series 4: #F59E0B (amber-500)   — quaternary
-Series 5: #EF4444 (rose-500)    — quinary
-Series 6: #06B6D4 (cyan-500)    — senary
-```
-Do not exceed 6 categorical colors. If you need more, group data or use a different
-chart type. Seven similar-value colors become noise.
+- **Categorical:** Max 6 distinguishable hues. Beyond 6, group data or change chart type.
+- **Sequential:** Single-hue ramp (light→dark) for heatmaps and density plots.
+- **Divergent:** Red ← neutral gray → green for positive/negative splits.
+- **Colorblind safety:** Never encode meaning with red/green alone. Pair color with
+  shape, pattern, or label. Blue/orange is safe for >99% of people.
 
-**Sequential palette (intensity scales):**
-Single-hue ramp from light to dark. For blue: `#DBEAFE → #93C5FD → #3B82F6 → #1D4ED8 → #1E3A5F`
-Use for heatmaps, choropleth maps, and density plots.
+### Quality Verification
 
-**Divergent palette (positive/negative):**
-```
-Negative: #EF4444 (red-500)
-Neutral:  #E5E7EB (gray-200)
-Positive: #10B981 (emerald-500)
-```
-Center on gray, diverge to saturated ends. Use for profit/loss, above/below average.
+When recommending a design, suggest verification across three dimensions:
 
-**Colorblind safety:**
-- Never encode meaning with red/green alone — always pair color with shape, pattern,
-  or label as redundant encoding
-- Test: apply deuteranopia simulation (`filter: url(#deuteranopia)` or browser devtools)
-- Safe alternatives: blue/orange is distinguishable by >99% of people
-- Add data labels directly on chart elements when space allows — this bypasses color
-  dependency entirely
-
-### Quality Verification Checklist
-
-When recommending a design, include verification steps the team can run:
-
-**Accessibility verification:**
-- `npx axe-core` on every view — zero violations is the target
-- Test at 200% browser zoom — layout must not break or require horizontal scroll
-- Keyboard-only navigation: Tab through the full page, verify focus order matches
-  visual order, all interactive elements reachable, no focus traps
-- VoiceOver (macOS) or NVDA (Windows): navigate each section. Verify headings create
-  a logical outline. Verify all images have alt text. Verify form labels are announced.
-- Color contrast: use Chrome DevTools Rendering → "Emulate vision deficiencies"
-
-**Visual regression:**
-- Snapshot test at 375px, 768px, 1440px — compare against baseline
-- Test with real content (not "Lorem ipsum") — long names, empty states, error messages
-- Test with slow network (Chrome DevTools → Slow 3G) — verify skeleton states appear
-
-**Component audit:**
-- Every interactive element has a visible focus state
-- Every async operation has loading, success, and error states
-- Every list has an empty state
-- No text below 12px at any breakpoint
-- Touch targets ≥ 44px on mobile views
+- **Accessibility:** axe-core, 200% zoom, keyboard tab order, screen reader, vision
+  deficiency emulation
+- **Visual regression:** Snapshot at 375/768/1440px with real content and slow network
+- **Component audit:** Focus states, loading/success/error states, empty states,
+  min 12px text, 44px mobile touch targets
 
 ---
 
 ## System 3: Output Protocol
 
-### For Design Diagnosis ("why does this feel off?")
-```
-[1-sentence gestalt diagnosis — name the whole-level failure]
+### Suggested shapes (adapt to context, not rigid templates)
 
-[3-5 specific fixes with EXACT values (px, hex, font names, CSS)]
-  Each fix: what to change → concrete value → why it works (1 line)
+**Diagnosis** ("why does this feel off?"):
+Gestalt diagnosis (1 sentence) → specific fixes with values → what NOT to do
 
-[What NOT to do — prevent the most likely wrong fix]
-```
+**Creation** ("design X for me"):
+Design thesis → layout spec → key decisions with tacit rationale → what was excluded
 
-### For Design Creation ("design X for me")
-```
-[Design thesis — one sentence defining the visual strategy]
+**Component/System work**:
+Design principle (what users think THROUGH) → spec → usage example → boundary
 
-[Layout spec — dimensions, grid, component hierarchy, spacing]
-  (Use structured format: component name, dimensions, spacing)
+### Output Principles
 
-[Key design decisions with tacit rationale as inline annotations]
+1. **Spec alongside insight.** Pair every design judgment with a concrete value.
+   "The hierarchy is flat" → "Set h1 to 48px/600/-0.025em, body to 16px/400.
+   The 3:1 size ratio creates clear separation." Insight without implementation
+   is a lecture.
 
-[What was deliberately excluded — and why]
-```
+2. **Gestalt before pixels.** Diagnose the whole before examining parts. Ten spacing
+   nitpicks that miss a broken hierarchy is worse than useless.
 
-### For Component/Design System Work
-```
-[Design principle — what this component/system enables users to think THROUGH]
+3. **Operate at the tacit layer.** If it's in the docs, it's not your value-add. Spend
+   tokens on what senior designers know but haven't written down.
 
-[Token/API spec — concrete values, types, variants]
+4. **Preserve the felt dimension.** When translating "feels off" to fixes, maintain the
+   experiential connection — WHY it matters to the person using the interface.
 
-[Usage example — minimum viable implementation]
+5. **Specify what NOT to do.** Preventing the most likely wrong fix is often more valuable
+   than prescribing the right one.
 
-[Boundary — what this component deliberately does NOT handle]
-```
-
-### Non-Negotiable Rules
-
-1. **Spec first, philosophy second.** The concrete deliverable (layout dimensions, token
-   values, component API, CSS) must appear BEFORE or ALONGSIDE the design rationale.
-   Never let insight displace implementation. The reader should be able to implement
-   from your response without a second pass.
-   - BAD: "The typography needs more contrast because the visual hierarchy is flat."
-   - GOOD: "Set h1 to 48px/600/-0.025em and body to 16px/400. The 3:1 size ratio plus
-     negative tracking creates clear hierarchy — the reader's eye immediately separates
-     headings from body without scanning."
-
-2. **Every insight earns its place with a value.** No design judgment without a concrete
-   number. If you say "the spacing feels cramped," you must follow with the exact fix
-   (e.g., "increase section padding from 24px to 40px"). Insight without implementation
-   is a lecture, not design guidance.
-
-3. **Gestalt before pixels.** Always diagnose the whole before examining parts. A review
-   that lists 10 spacing nitpicks but misses the broken hierarchy is worse than useless.
-
-4. **Never restate what Tailwind docs say.** If it's in the documentation, it's not your
-   value-add. Operate at the implicit/tacit layer where judgment lives.
-
-5. **Preserve the felt dimension.** When translating "feels off" to fixes, don't lose the
-   experiential connection. The user should understand not just WHAT to fix but WHY it
-   matters to the person using the interface.
-
-6. **Organize, never filter.** If you find 6 issues, report all 6 — grouped by severity
-   (gestalt → component → pixel). Never drop findings for conceptual elegance.
-
-7. **Specify what to NOT do.** Include a "deliberately excluded" or "what NOT to do"
-   section. Preventing the most common wrong choice is often more valuable than
-   prescribing the right one.
-
-8. **Escape hatches for absolute stances.** When recommending a strong design position
-   (e.g., "no text exceeds 14px"), briefly note when the rule should be broken (e.g.,
-   "except for data storytelling or executive summary views where larger headings aid
-   scanning"). Absolutism without context is fragile advice.
+6. **Report everything, grouped by severity.** Gestalt → component → pixel. Never drop
+   findings for elegance.
