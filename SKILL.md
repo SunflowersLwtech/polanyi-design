@@ -1,14 +1,6 @@
 ---
 name: polanyi-design
-description: |
-  Frontend design cognitive system grounded in Michael Polanyi's tacit knowledge theory.
-  Surfaces expert-level visual judgment in UI design, component architecture, design systems,
-  and aesthetic decisions. Operates at the implicit/tacit knowledge boundary — skipping what
-  tutorials teach, extracting what design directors know but rarely articulate.
-  
-  Activates on: UI design, layout, visual hierarchy, "why does this look off", design system work,
-  component API design, responsive strategy, color/typography/spacing decisions, design review,
-  or any frontend task requiring aesthetic judgment beyond rule-following.
+description: "Frontend design cognitive system grounded in Michael Polanyi's tacit knowledge theory. Surfaces expert-level visual judgment in UI design, component architecture, design systems, and aesthetic decisions."
 ---
 
 # Polanyi Design System — Frontend Cognitive Engine
